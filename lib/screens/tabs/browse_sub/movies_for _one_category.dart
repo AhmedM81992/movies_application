@@ -32,7 +32,7 @@ class MoviesForOneCategory extends StatelessWidget {
           if (snapshot.hasError) {
             return Center(child: Text("Something Went Wrong!"));
           }
-          var categoryMoviesList = snapshot.data!.results ?? [];
+          var categoryMoviesList = snapshot.data?.results ?? [];
           return ListView.builder(
             itemCount: categoryMoviesList.length,
             itemBuilder: (context, index) {

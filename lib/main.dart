@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movies_app/core/network/remote/dio_helper.dart';
 import 'package:movies_app/feature/home/presentation/screens/layout/splash_screen.dart';
 import 'package:movies_app/providers/movie_detail_provider.dart';
 import 'package:movies_app/providers/my_provider.dart';
@@ -17,6 +18,7 @@ import 'screens/tabs/browse_sub/movies_for _one_category.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await DioHelper.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize LocalDatabase

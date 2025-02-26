@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../components/constants.dart';
+import '../../utils/app_strings.dart';
 
 class DioHelper {
   static late Dio dio;
@@ -12,15 +13,18 @@ class DioHelper {
         receiveDataWhenStatusError: true,
         headers: {
           'Content-Type': 'application/json',
-          //'Authorization': 'Bearer $token',
+          'Authorization': AppStrings.headerApiKey!,
         },
       ),
     );
   }
 
-  static Future<Response> getData({required String url}) async {
+  static Future<Response> getData({
+    required String url,
+    Map<String, dynamic>? query,
+  }) async {
     try {
-      return await dio.get(url);
+      return await dio.get(url, queryParameters: query);
     } on Exception catch (e) {
       debugPrint("Dio Exception ::> $e");
       rethrow;
