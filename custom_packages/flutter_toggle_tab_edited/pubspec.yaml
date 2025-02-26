@@ -1,0 +1,22 @@
+name: flutter_toggle_tab_edited
+description: Library to create Beautiful and Customized Tab/Toggle Widget on Flutter
+version: 1.5.0
+homepage: https://github.com/Lzyct/flutter_toggle_tab
+
+environment:
+  sdk: '^3.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lint: ^2.3.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.

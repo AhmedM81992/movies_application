@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../models/MovieDiscoverModel.dart';
-import '../../../shared/networks/remote/api_manager.dart';
-import '../../../shared/styles/my_theme_data.dart';
+import '../../../core/network/remote/api_manager.dart';
+import '../../../config/theme/my_theme_data.dart';
 import 'category_movies-list_items.dart';
 
 class MoviesForOneCategory extends StatelessWidget {

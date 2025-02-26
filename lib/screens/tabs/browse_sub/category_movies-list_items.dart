@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/screens/tabs/home_sub_items/details_page.dart';
-import 'package:movies_app/shared/components/constants.dart';
-import 'package:movies_app/shared/styles/my_theme_data.dart';
+import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/details_page.dart';
+import 'package:movies_app/core/components/constants.dart';
+import 'package:movies_app/config/theme/my_theme_data.dart';
 
 import '../../../models/MovieDiscoverModel.dart';
 
@@ -31,8 +31,8 @@ class categoryMoviesListItem extends StatelessWidget {
                     width: MediaQuery.sizeOf(context).width * 0.485,
                     height: MediaQuery.sizeOf(context).height * 0.118,
                     child: CachedNetworkImage(
-                      imageUrl: Constants.IMAGE_BASE_URL +
-                          (result.backdropPath ?? ""),
+                      imageUrl:
+                          Constants.imageBaseUrl + (result.backdropPath ?? ""),
                       fit: BoxFit.cover,
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) => Center(

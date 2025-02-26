@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/models/ResultsModel.dart';
-import 'package:movies_app/screens/tabs/home_sub_items/details_page.dart';
-import 'package:movies_app/shared/components/constants.dart';
-import 'package:movies_app/shared/styles/my_theme_data.dart';
+import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/details_page.dart';
+import 'package:movies_app/core/components/constants.dart';
+import 'package:movies_app/config/theme/my_theme_data.dart';
 
-import '../../../widgets/containers/bookmark_container.dart';
+import '../../../core/shared/bookmark_container.dart';
 
 class WatchListItems extends StatelessWidget {
   final Results result;
@@ -33,7 +33,7 @@ class WatchListItems extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.485,
                       height: MediaQuery.of(context).size.height * 0.118,
                       child: CachedNetworkImage(
-                        imageUrl: Constants.IMAGE_BASE_URL +
+                        imageUrl: Constants.imageBaseUrl +
                             (result.backdropPath ?? ""),
                         fit: BoxFit.cover,
                         progressIndicatorBuilder:

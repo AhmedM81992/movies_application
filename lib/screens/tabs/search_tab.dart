@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/models/ResultsModel.dart';
 import 'package:movies_app/screens/tabs/search_sub_items/search_list_items.dart';
-import 'package:movies_app/shared/networks/remote/api_manager.dart';
-import 'package:movies_app/shared/styles/my_theme_data.dart';
+import 'package:movies_app/core/network/remote/api_manager.dart';
+import 'package:movies_app/config/theme/my_theme_data.dart';
 
 import '../../models/SearchModel.dart';
 

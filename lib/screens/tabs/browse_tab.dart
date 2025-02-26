@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/models/MovieDiscoverModel.dart';
-import 'package:movies_app/shared/networks/remote/api_manager.dart';
-import 'package:movies_app/shared/styles/my_theme_data.dart';
+import 'package:movies_app/core/network/remote/api_manager.dart';
+import 'package:movies_app/config/theme/my_theme_data.dart';
 
 import 'browse_sub/movies_for _one_category.dart';
 
@@ -40,7 +39,7 @@ class BrowseTab extends StatelessWidget {
                   if (snapshot.hasError) {
                     return const Center(child: Text("Something Went Wrong!"));
                   }
-                  var categoryList = snapshot.data!.genres ?? [];
+                  var categoryList = snapshot.data?.genres ?? [];
                   return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -69,7 +68,7 @@ class BrowseTab extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 image: DecorationImage(
-                                  image: AssetImage(
+                                  image: const AssetImage(
                                     "assets/images/browse/placeholder_image.png",
                                   ),
                                   fit: BoxFit.cover,

@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movies_app/layout/splash_screen.dart';
+import 'package:movies_app/feature/home/presentation/screens/layout/splash_screen.dart';
 import 'package:movies_app/providers/movie_detail_provider.dart';
 import 'package:movies_app/providers/my_provider.dart';
-import 'package:movies_app/screens/home_screen.dart';
-import 'package:movies_app/screens/tabs/home_sub_items/details_page.dart';
-import 'package:movies_app/screens/tabs/home_sub_items/sub_items/detailed_container_sub_items/details_videoplayer.dart';
-import 'package:movies_app/shared/networks/local/popular_local_database.dart';
+import 'package:movies_app/feature/home/presentation/screens/mobile/mobile_home_screen.dart';
+import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/details_page.dart';
+import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/sub_items/detailed_container_sub_items/details_videoplayer.dart';
+import 'package:movies_app/core/network/local/popular_local_database.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -44,9 +44,10 @@ class MyApp extends StatelessWidget {
       initialRoute: SplashScreen.routeName,
       routes: {
         SplashScreen.routeName: (context) => const SplashScreen(),
-        HomeScreen.routeName: (context) => const HomeScreen(),
+        MobileHomeScreen.routeName: (context) => const MobileHomeScreen(),
         DetailsPage.routeName: (context) => const DetailsPage(),
-        MoviesForOneCategory.routeName: (context) => const MoviesForOneCategory(),
+        MoviesForOneCategory.routeName: (context) =>
+            const MoviesForOneCategory(),
         DetailsVideoPlayer.routeName: (context) {
           // Extract the movieId argument from the route settings
           final String? movieId =

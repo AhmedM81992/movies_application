@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/models/DetailsModel.dart';
 
-import '../shared/networks/local/fetch_api.dart';
+import '../core/network/local/fetch_api.dart';
 
 // Define a class to hold the state
 class MovieDetailsProvider extends ChangeNotifier {

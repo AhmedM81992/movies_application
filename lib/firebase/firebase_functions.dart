@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies_app/models/ResultsModel.dart';
 
 class FireBaseFunctions {
+
+
+  
   static CollectionReference<Results>
       getFavoritesCollection() {
     return FirebaseFirestore.instance

@@ -62,3 +62,4 @@ android/.gradle/file-system.probe
 android/local.properties
 pubspec.lock
 ios/RunnerTests/RunnerTests.swift
+android/app/.cxx/

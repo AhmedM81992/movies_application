@@ -13,23 +13,36 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.2.1
-  cached_network_image: ^3.3.1
-  flutter_dotenv: ^5.1.0
-  provider: ^6.1.2
-  http: ^1.2.1
-  firebase_core: ^2.29.0
-  cloud_firestore: ^4.16.1
-  youtube_player_flutter: ^9.0.0
-  another_flutter_splash_screen: ^1.2.0
-  sqflite: ^2.3.3
+  dropdown_search_edited:
+    path: ./custom_packages/dropdown_search_edited
+  flutter_toggle_tab_edited:
+    path: ./custom_packages/flutter_toggle_tab_edited
+
+  cupertino_icons: any
+  google_fonts: any
+  cached_network_image: any
+  flutter_dotenv: any
+  provider: any
+  http: any
+  firebase_core: any
+  cloud_firestore: any
+  youtube_player_flutter: any
+  another_flutter_splash_screen: any
+  sqflite: any
+  bloc: any
+  easy_localization: any
+  dio: any
+  shared_preferences: ^2.5.2
+  path: any
+  win32: ^5.11.0
+  flutter_inappwebview: ^6.1.5
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.2
+  flutter_lints: any
 
 # The following section is specific to Flutter packages.
 flutter:
