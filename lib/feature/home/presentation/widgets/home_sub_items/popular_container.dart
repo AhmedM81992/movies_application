@@ -63,25 +63,21 @@ class _PopularContainerState extends State<PopularContainer> {
                           ),
                         ),
                         Center(
-                          child: GestureDetector(
-                            onTap: () async {
+                          child: IconButton(
+                            onPressed: () async {
+                              debugPrint("Fetching 2");
+                              String movieId = moviesList[index].id.toString();
+
+                              Navigator.pushNamed(
+                                  context, DetailsPage.routeName,
+                                  arguments: movieId);
                               await FetchAPI.getdetails(
                                   moviesList[index].id.toString());
                             },
-                            child: IconButton(
-                              onPressed: () {
-                                String movieId =
-                                    moviesList[index].id.toString();
-
-                                Navigator.pushNamed(
-                                    context, DetailsPage.routeName,
-                                    arguments: movieId);
-                              },
-                              icon: Icon(
-                                CupertinoIcons.play_circle_fill,
-                                color: Colors.white,
-                                size: MediaQuery.sizeOf(context).width * 0.24,
-                              ),
+                            icon: Icon(
+                              CupertinoIcons.play_circle_fill,
+                              color: Colors.white,
+                              size: MediaQuery.sizeOf(context).width * 0.24,
                             ),
                           ),
                         ),
@@ -96,34 +92,30 @@ class _PopularContainerState extends State<PopularContainer> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
+                                    Navigator.pushNamed(
+                                        context, DetailsPage.routeName,
+                                        arguments: moviesList[index].id);
                                     await FetchAPI.getdetails(
                                         moviesList[index].id.toString());
+
+                                    debugPrint("Fetching 1");
                                   },
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, DetailsPage.routeName,
-                                          arguments: moviesList[index].id);
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: CachedNetworkImage(
-                                        imageUrl: Constants.imageBaseUrl +
-                                            (moviesList[index].posterPath ??
-                                                ""),
-                                        fit: BoxFit.cover,
-                                        progressIndicatorBuilder: (context, url,
-                                                downloadProgress) =>
-                                            Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                        color: MyThemeData
-                                                            .selectedColor,
-                                                        value: downloadProgress
-                                                            .progress)),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: Constants.imageBaseUrl +
+                                          (moviesList[index].posterPath ?? ""),
+                                      fit: BoxFit.cover,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          Center(
+                                              child: CircularProgressIndicator(
+                                                  color:
+                                                      MyThemeData.selectedColor,
+                                                  value: downloadProgress
+                                                      .progress)),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     ),
                                   ),
                                 ),

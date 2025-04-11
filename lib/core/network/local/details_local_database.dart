@@ -4,71 +4,78 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DetailsLocalDatabase {
-  static late Database _database;
-  static bool _isDatabaseInitialized = false;
-
-  static late StreamController<String?> _dataStreamController;
+  static Database? _database;
+  static final StreamController<String?> _dataStreamController =
+      StreamController.broadcast();
   static Stream<String?> get dataStream => _dataStreamController.stream;
 
-  static Future<Database> get database async {
-    // ignore: unnecessary_null_comparison
-    if (_database != null) return _database;
-    _database = await initDatabase();
-    return _database;
+  static Future<Database> getDatabase() async {
+    _database ??= await initDatabase();
+    return _database!;
   }
 
   static Future<Database> initDatabase() async {
     String path = join(await getDatabasesPath(), 'details_api_data.db');
 
-    _database = await openDatabase(
+    return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE details_api_data(id INTEGER PRIMARY KEY, data TEXT, timestamp INTEGER)",
+          "CREATE TABLE details_api_data(id TEXT PRIMARY KEY, data TEXT, timestamp INTEGER)",
         );
       },
     );
-
-    _isDatabaseInitialized = true;
-    _dataStreamController = StreamController.broadcast();
-    return _database;
   }
 
-  static Future<void> saveData(String data) async {
-    final Database db = await database;
+  static Future<void> saveData(String id, String data) async {
+    final Database db = await getDatabase();
     await db.insert(
       'details_api_data',
-      {'data': data, 'timestamp': DateTime.now().millisecondsSinceEpoch},
+      {
+        'id': id,
+        'data': data,
+        'timestamp': DateTime.now().millisecondsSinceEpoch
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    _dataStreamController.add(data); // Notify listeners about new data
+
+    debugPrint("✅ Data saved for DetailsLocalDatabase (ID: $id)");
+    _dataStreamController.add(data);
   }
 
-  static Future<String?> getData() async {
-    if (!_isDatabaseInitialized) {
-      debugPrint("Database is not initialized DetailsLocalDatabase.");
-      await initDatabase();
-    }
+  static Future<String?> getData(String id) async {
+    final Database db = await getDatabase();
 
-    final Database db = await database;
-    List<Map<String, dynamic>> maps = await db.query('details_api_data');
+    List<Map<String, dynamic>> maps = await db.query(
+      'details_api_data',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    debugPrint("🔍 Query result for ID $id: $maps"); // Print query result
+
     if (maps.isNotEmpty) {
       Map<String, dynamic> latestData = maps.first;
       int timestamp = latestData['timestamp'];
+
       if (DateTime.now().millisecondsSinceEpoch - timestamp <=
           24 * 60 * 60 * 1000) {
-        debugPrint("Data is up to date for DetailsLocalDatabase");
+        debugPrint("✅ Data is up to date for DetailsLocalDatabase (ID: $id)");
         return latestData['data'];
+      } else {
+        debugPrint("⏳ Data expired for ID: $id. Deleting...");
+        await deleteData(id);
       }
     }
-    debugPrint("Data Expired or Null for TopRatedLocalDatabase!");
+
+    debugPrint("❌ No valid cached data found for ID: $id.");
     return null;
   }
 
-  static Future<void> deleteData() async {
-    final Database db = await database;
-    await db.delete('details_api_data');
-    _dataStreamController.add(null); // Notify listeners about data deletion
+  static Future<void> deleteData(String id) async {
+    final Database db = await getDatabase();
+    await db.delete('details_api_data', where: 'id = ?', whereArgs: [id]);
+    _dataStreamController.add(null);
   }
 }

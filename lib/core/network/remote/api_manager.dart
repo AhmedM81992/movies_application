@@ -1,10 +1,8 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:movies_app/core/network/remote/dio_helper.dart';
 import 'package:movies_app/models/DetailsModel.dart';
 import 'package:movies_app/models/PopularModel.dart';
@@ -15,7 +13,6 @@ import 'package:movies_app/models/TrailerModel.dart';
 import 'package:movies_app/models/UpComingModel.dart';
 import 'package:movies_app/core/components/constants.dart';
 import 'package:movies_app/core/network/remote/end_points.dart';
-import 'package:movies_app/core/utils/app_strings.dart';
 
 import '../../../models/MovieDiscoverModel.dart';
 import '../../../models/MoviesListModel.dart';

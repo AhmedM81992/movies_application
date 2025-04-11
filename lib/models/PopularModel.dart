@@ -28,8 +28,7 @@ class PopularModel {
     final map = <String, dynamic>{};
     map['page'] = page;
     if (results != null) {
-      map['results'] =
-          results?.map((v) => v.toJson()).toList();
+      map['results'] = results?.map((v) => v.toJson()).toList();
     }
     map['total_pages'] = totalPages;
     map['total_results'] = totalResults;

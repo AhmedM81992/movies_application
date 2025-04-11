@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, duplicate_ignore
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../components/constants.dart';
@@ -7,16 +9,20 @@ class DioHelper {
   static late Dio dio;
 
   static init() {
-    dio = Dio(
-      BaseOptions(
-        baseUrl: Constants.baseUrl,
-        receiveDataWhenStatusError: true,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': AppStrings.headerApiKey!,
-        },
-      ),
-    );
+    try {
+      dio = Dio(
+        BaseOptions(
+          baseUrl: Constants.baseUrl,
+          receiveDataWhenStatusError: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': AppStrings.headerApiKey!,
+          },
+        ),
+      );
+    } catch (e) {
+      debugPrint("Dio Exception ::> $e");
+    }
   }
 
   static Future<Response> getData({
@@ -55,12 +61,12 @@ class DioHelper {
     List<Map<String, Object?>>? data,
   }) async {
     try {
-      // data
-      //     .toString()
-      //     .split(",")
-      //     // ignore: prefer_interpolation_to_compose_strings
-      //     .forEach((line) => debugPrint("Data Sent::>> ${'"' + line.replaceFirst(":", '":')},"
-      //         .replaceFirst('" ', '"')));
+      data
+          .toString()
+          .split(",")
+          // ignore: prefer_interpolation_to_compose_strings
+          .forEach((line) => debugPrint("Data Sent::>> ${'"' + line.replaceFirst(":", '":')},"
+              .replaceFirst('" ', '"')));
       return await dio.post(url, data: data);
     } on Exception catch (e) {
       debugPrint("Dio Exception ::> $e");

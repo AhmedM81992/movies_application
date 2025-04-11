@@ -28,6 +28,7 @@ class _DetailsPageState extends State<DetailsPage> {
     movieId = arguments is int ? arguments.toString() : arguments as String;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyThemeData.backgroundColor,
@@ -96,7 +97,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                 child: CircularProgressIndicator(
                                     color: MyThemeData.selectedColor,
                                     value: downloadProgress.progress)),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -232,8 +234,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   color: const Color(0xFFFFBB3B),
                                 ),
                                 Text(
-                                  movieDetail.voteAverage
-                                          ?.toStringAsFixed(1) ??
+                                  movieDetail.voteAverage?.toStringAsFixed(1) ??
                                       "",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
