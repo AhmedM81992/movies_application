@@ -53,7 +53,13 @@ class DetailsLocalDatabase {
       whereArgs: [id],
     );
 
-    debugPrint("🔍 Query result for ID $id: $maps"); // Print query result
+    debugPrint("🔍 Query result for ID $id"); // Print query result
+    maps.toString()
+        .split(",")
+        // ignore: prefer_interpolation_to_compose_strings
+        .forEach((line) => debugPrint(
+            "Data Stored::>> ${line.replaceFirst(":", '":').replaceFirst("{", "").replaceFirst("}", "").replaceFirst("[", "").replaceFirst("]", "")},"
+                .replaceFirst('" ', '"')));
 
     if (maps.isNotEmpty) {
       Map<String, dynamic> latestData = maps.first;
