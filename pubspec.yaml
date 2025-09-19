@@ -26,7 +26,7 @@ dependencies:
   http: any
   firebase_core: any
   cloud_firestore: any
-  youtube_player_flutter: any
+  youtube_player_flutter: ^9.1.2
   another_flutter_splash_screen: any
   sqflite: any
   bloc: any
