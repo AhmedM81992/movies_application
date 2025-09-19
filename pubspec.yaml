@@ -37,6 +37,7 @@ dependencies:
   win32: ^5.11.0
   flutter_inappwebview: ^6.1.5
   path_provider: ^2.1.5
+  secure_application: ^4.1.0
 
 dev_dependencies:
   flutter_test:
