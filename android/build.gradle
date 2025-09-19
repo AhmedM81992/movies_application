@@ -4,12 +4,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0' // Updated version
+        // Match Gradle 8.7+ (wrapper) with AGP 8.6.1
+        classpath 'com.android.tools.build:gradle:8.6.1'
+        // Add Kotlin classpath explicitly (some projects rely on this)
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
     }
 }
 
-// Ensure Kotlin version is consistent
-ext.kotlin_version = '1.9.22' // Updated version
+// Keep Kotlin version consistent everywhere
+ext.kotlin_version = '1.9.24'
 
 allprojects {
     repositories {
