@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'package:secure_application/secure_application.dart'; // ^4.1.0
 
+import 'core/components/constants.dart';
 import 'firebase_options.dart';
 import 'screens/tabs/browse_sub/movies_for _one_category.dart';
 
@@ -44,19 +45,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _securedOnce = false;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // call secure() once when SecureApplication is in the tree
-    if (_securedOnce) return;
+    if (Constants.securedOnce) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final secure = SecureApplicationProvider.of(context);
       secure
           ?.secure(); // ANDROID: sets FLAG_SECURE (blocks screenshots/recorders)
     });
-    _securedOnce = true;
+    Constants.securedOnce = true;
   }
 
   @override

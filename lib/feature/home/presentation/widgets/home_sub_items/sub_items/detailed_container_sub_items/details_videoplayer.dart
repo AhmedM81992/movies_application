@@ -7,6 +7,7 @@ import 'package:movies_app/core/network/remote/api_manager.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/shared/bookmark_container.dart';
 import 'package:movies_app/core/shared/full_screen_video_player.dart';
+import 'package:secure_application/secure_application.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../../../../models/TrailerModel.dart';
@@ -80,6 +81,7 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    Constants.securedOnce = false;
     return Scaffold(
       backgroundColor: MyThemeData.backgroundColor,
       appBar: !_isFullScreen
@@ -109,55 +111,69 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
               ),
             )
           : null,
-      body: FutureBuilder<String?>(
-        future: _trailerUrlFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator(
-                    color: MyThemeData.selectedColor));
-          } else if (snapshot.hasError ||
-              !snapshot.hasData ||
-              snapshot.data == null) {
-            return Center(child: Text('Trailer not available'));
-          }
+      body: SecureApplication(
+        child: FutureBuilder<String?>(
+          future: _trailerUrlFuture,
+          builder: (context, snapshot) {
+            // Call once when this subtree mounts
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final secure = SecureApplicationProvider.of(context);
+              secure?.secure();
+              debugPrint("secure ::> ${secure!.secured}");
 
-          _controller = YoutubePlayerController(
-            initialVideoId: YoutubePlayer.convertUrlToId(snapshot.data!) ?? '',
-            flags: YoutubePlayerFlags(autoPlay: true),
-          );
+              // ANDROID: set FLAG_SECURE -> block screenshots & most recorders
+            });
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child:
+                    CircularProgressIndicator(color: MyThemeData.selectedColor),
+              );
+            } else if (snapshot.hasError ||
+                !snapshot.hasData ||
+                snapshot.data == null) {
+              return Center(
+                child: Text('Trailer not available'),
+              );
+            }
 
-          // Use the YouTubePlayer widget to play the trailer
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: MyThemeData.selectedColor,
-                progressColors: ProgressBarColors(
-                  playedColor: MyThemeData.selectedColor,
-                  handleColor: MyThemeData.selectedColor,
-                ),
-                onReady: () {
-                  print('Player is ready.');
-                },
-                onEnded: (data) {
-                  print('Video has ended.');
-                },
-              ),
-              if (!_isFullScreen)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+            _controller = YoutubePlayerController(
+              initialVideoId:
+                  YoutubePlayer.convertUrlToId(snapshot.data!) ?? '',
+              flags: YoutubePlayerFlags(autoPlay: true),
+            );
+
+            // Use the YouTubePlayer widget to play the trailer
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: MyThemeData.selectedColor,
+                  progressColors: ProgressBarColors(
+                    playedColor: MyThemeData.selectedColor,
+                    handleColor: MyThemeData.selectedColor,
                   ),
+                  onReady: () {
+                    print('Player is ready.');
+                  },
+                  onEnded: (data) {
+                    print('Video has ended.');
+                  },
                 ),
-            ],
-          );
-        },
+                if (!_isFullScreen)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: !_isFullScreen
           ? Builder(
@@ -277,46 +293,44 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
                                   itemBuilder: (context, index) {
                                     return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          child: Stack(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(context,
-                                                      DetailsPage.routeName,
-                                                      arguments:
-                                                          moviesList[index].id);
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: Constants
-                                                            .imageBaseUrl +
-                                                        (moviesList[index]
-                                                                .posterPath ??
-                                                            ""),
-                                                    fit: BoxFit.cover,
-                                                    progressIndicatorBuilder: (context,
-                                                            url,
-                                                            downloadProgress) =>
-                                                        Center(
-                                                            child: CircularProgressIndicator(
-                                                                color: MyThemeData
-                                                                    .selectedColor,
-                                                                value: downloadProgress
-                                                                    .progress)),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
-                                                  ),
+                                        child: Stack(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pushNamed(context,
+                                                    DetailsPage.routeName,
+                                                    arguments:
+                                                        moviesList[index].id);
+                                              },
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      Constants.imageBaseUrl +
+                                                          (moviesList[index]
+                                                                  .posterPath ??
+                                                              ""),
+                                                  fit: BoxFit.cover,
+                                                  progressIndicatorBuilder: (context,
+                                                          url,
+                                                          downloadProgress) =>
+                                                      Center(
+                                                          child: CircularProgressIndicator(
+                                                              color: MyThemeData
+                                                                  .selectedColor,
+                                                              value:
+                                                                  downloadProgress
+                                                                      .progress)),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
                                                 ),
                                               ),
-                                              MyBookmarkWidget(
-                                                  moviesList:
-                                                      moviesList[index]),
-                                            ],
-                                          ),
+                                            ),
+                                            MyBookmarkWidget(
+                                                moviesList: moviesList[index]),
+                                          ],
                                         ));
                                   },
                                   itemCount: moviesList.length,
