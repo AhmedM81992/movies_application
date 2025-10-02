@@ -45,18 +45,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // call secure() once when SecureApplication is in the tree
-    if (Constants.securedOnce) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final secure = SecureApplicationProvider.of(context);
-      secure
-          ?.secure(); // ANDROID: sets FLAG_SECURE (blocks screenshots/recorders)
-    });
-    Constants.securedOnce = true;
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // call secure() once when SecureApplication is in the tree
+  //   if (Constants.securedOnce) return;
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     final secure = SecureApplicationProvider.of(context);
+  //     secure
+  //         ?.secure(); // ANDROID: sets FLAG_SECURE (blocks screenshots/recorders)
+  //   });
+  //   Constants.securedOnce = true;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,16 +64,17 @@ class _MyAppState extends State<MyApp> {
       child: Builder(
         builder: (ctx) {
           // Call once when this subtree mounts
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final secure = SecureApplicationProvider.of(ctx);
-            secure
-                ?.secure(); // ANDROID: set FLAG_SECURE -> block screenshots & most recorders
-          });
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
+          //   final secure = SecureApplicationProvider.of(ctx);
+          //   secure
+          //       ?.secure(); // ANDROID: set FLAG_SECURE -> block screenshots & most recorders
+          // });
 
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             // Keep SecureGate *under* MaterialApp to have Directionality
             builder: (context, child) => SecureGate(
+              
               blurr: 16,
               opacity: 0.08,
               child: child ?? const SizedBox.shrink(),

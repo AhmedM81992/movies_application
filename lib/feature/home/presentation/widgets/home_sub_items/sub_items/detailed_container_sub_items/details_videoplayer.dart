@@ -10,6 +10,7 @@ import 'package:movies_app/core/shared/full_screen_video_player.dart';
 import 'package:secure_application/secure_application.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../../../../../core/utils/you_tube_video_player.dart';
 import '../../../../../../../models/TrailerModel.dart';
 
 class DetailsVideoPlayer extends StatefulWidget {
@@ -54,7 +55,7 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
           ? 'https://www.youtube.com/watch?v=${trailer.key}'
           : null;
     } catch (e) {
-      print('Error fetching trailer: $e');
+      debugPrint('Error fetching trailer: $e');
       return null;
     }
   }
@@ -64,7 +65,7 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
       final details = await ApiManager.getDetails(widget.movieId);
       return details?.title;
     } catch (e) {
-      print('Error fetching movie title: $e');
+      debugPrint('Error fetching movie title: $e');
       return null;
     }
   }
@@ -74,7 +75,7 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
       final details = await ApiManager.getDetails(widget.movieId);
       return details?.overview;
     } catch (e) {
-      print('Error fetching movie title: $e');
+      debugPrint('Error fetching movie title: $e');
       return null;
     }
   }
@@ -111,70 +112,75 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
               ),
             )
           : null,
-      body: SecureApplication(
-        child: FutureBuilder<String?>(
-          future: _trailerUrlFuture,
-          builder: (context, snapshot) {
-            // Call once when this subtree mounts
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final secure = SecureApplicationProvider.of(context);
-              secure?.secure();
-              debugPrint("secure ::> ${secure!.secured}");
-
-              // ANDROID: set FLAG_SECURE -> block screenshots & most recorders
-            });
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child:
-                    CircularProgressIndicator(color: MyThemeData.selectedColor),
-              );
-            } else if (snapshot.hasError ||
-                !snapshot.hasData ||
-                snapshot.data == null) {
-              return Center(
-                child: Text('Trailer not available'),
-              );
-            }
-
-            _controller = YoutubePlayerController(
-              initialVideoId:
-                  YoutubePlayer.convertUrlToId(snapshot.data!) ?? '',
-              flags: YoutubePlayerFlags(autoPlay: true),
-            );
-
-            // Use the YouTubePlayer widget to play the trailer
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: MyThemeData.selectedColor,
-                  progressColors: ProgressBarColors(
-                    playedColor: MyThemeData.selectedColor,
-                    handleColor: MyThemeData.selectedColor,
-                  ),
-                  onReady: () {
-                    print('Player is ready.');
-                  },
-                  onEnded: (data) {
-                    print('Video has ended.');
-                  },
-                ),
-                if (!_isFullScreen)
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
+      body: YouTubeVideoPlayer(
+        videoUrl: "https://www.youtube.com/watch?v=SWV3vwlY2f0",
       ),
+
+      // SecureApplication(
+      //   child: FutureBuilder<String?>(
+      //     future: _trailerUrlFuture,
+      //     builder: (context, snapshot) {
+      //       // Call once when this subtree mounts
+      //       WidgetsBinding.instance.addPostFrameCallback((_) {
+      //         final secure = SecureApplicationProvider.of(context);
+      //         secure?.secure();
+      //         debugPrint("secure ::> ${secure!.secured}");
+
+      //         // ANDROID: set FLAG_SECURE -> block screenshots & most recorders
+      //       });
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Center(
+      //           child:
+      //               CircularProgressIndicator(color: MyThemeData.selectedColor),
+      //         );
+      //       } else if (snapshot.hasError ||
+      //           !snapshot.hasData ||
+      //           snapshot.data == null) {
+      //         return Center(
+      //           child: Text('Trailer not available'),
+      //         );
+      //       }
+
+      //       _controller = YoutubePlayerController(
+      //         initialVideoId:
+      //             YoutubePlayer.convertUrlToId(snapshot.data!) ?? '',
+      //         flags: YoutubePlayerFlags(autoPlay: true),
+      //       );
+
+      //       // Use the YouTubePlayer widget to play the trailer
+      //       return Stack(
+      //         alignment: Alignment.center,
+      //         children: [
+      //           YoutubePlayer(
+      //             controller: _controller,
+      //             showVideoProgressIndicator: true,
+      //             progressIndicatorColor: MyThemeData.selectedColor,
+      //             progressColors: ProgressBarColors(
+      //               playedColor: MyThemeData.selectedColor,
+      //               handleColor: MyThemeData.selectedColor,
+      //             ),
+      //             onReady: () {
+      //               print('Player is ready.');
+      //             },
+      //             onEnded: (data) {
+      //               print('Video has ended.');
+      //             },
+      //           ),
+      //           if (!_isFullScreen)
+      //             Positioned(
+      //               bottom: 0,
+      //               left: 0,
+      //               right: 0,
+      //               child: Padding(
+      //                 padding: const EdgeInsets.only(top: 8.0),
+      //               ),
+      //             ),
+      //         ],
+      //       );
+      //     },
+      //   ),
+      // ),
+
       floatingActionButton: !_isFullScreen
           ? Builder(
               builder: (context) {
