@@ -7,7 +7,7 @@ import 'package:movies_app/core/network/local/fetch_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../../../models/PopularModel.dart';
+import 'package:movies_app/feature/home/data/models/popular_model/popular_model_response_model.dart';
 
 class PopularLocalDatabase {
   static late Database _database;

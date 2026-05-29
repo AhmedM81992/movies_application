@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/details_page.dart';
 import 'package:movies_app/core/components/constants.dart';
-import 'package:movies_app/core/network/local/fetch_api.dart';
+import 'package:movies_app/core/utils/load_status.dart';
+import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_bloc.dart';
+import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_state.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/shared/bookmark_container.dart';
 
@@ -34,18 +37,17 @@ class _TopRatedContainerState extends State<TopRatedContainer> {
                   color: Colors.white),
             ),
           ),
-          FutureBuilder(
-            future: FetchAPI.getToprated(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+          BlocBuilder<HomeScreenBloc, HomeScreenState>(
+            builder: (context, state) {
+              if (state.topRatedStatus == LoadStatus.loading) {
                 return Center(
                     child: CircularProgressIndicator(
                         color: MyThemeData.selectedColor));
               }
-              if (snapshot.hasError) {
+              if (state.topRatedStatus == LoadStatus.error) {
                 return Center(child: Text("Something Went Wrong!"));
               }
-              var moviesList = snapshot.data?.results ?? [];
+              final moviesList = state.topRatedResults;
               return Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(

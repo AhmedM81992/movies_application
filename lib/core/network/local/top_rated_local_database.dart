@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:movies_app/models/TopRatedModel.dart';
+import 'package:movies_app/feature/home/data/models/top_rated_model/top_rated_model_response_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

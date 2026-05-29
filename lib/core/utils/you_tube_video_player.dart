@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:movies_app/core/utils/size_config.dart';
 import 'dart:async';
 
 class YouTubeVideoPlayer extends StatefulWidget {
@@ -113,7 +114,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
           onPressed: () => _seekRelative(-10),
         ),
         const CurrentPosition(),
-        const SizedBox(width: 8),
+        SizeConfig.horizontalSpace(8),
         const Expanded(
           child: ProgressBar(
             isExpanded: true,
@@ -123,7 +124,7 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        SizeConfig.horizontalSpace(8),
         const RemainingDuration(),
         IconButton(
           tooltip: 'Forward 10s',
@@ -144,7 +145,8 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
               .toList(),
           onChanged: (value) {
             if (value != null) {
-              setState(() => _currentSpeed = value);
+              setState(() => _currentSpeed =
+                  value); // BRAIN_EXCEPTION: local UI-only video playback state
               _controller?.setPlaybackRate(value);
             }
           },

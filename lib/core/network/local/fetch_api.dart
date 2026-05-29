@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/models/DetailsModel.dart';
-import 'package:movies_app/models/PopularModel.dart';
-import 'package:movies_app/models/TopRatedModel.dart';
-import 'package:movies_app/models/UpComingModel.dart';
+import 'package:movies_app/feature/home/data/models/details_model/details_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/popular_model/popular_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/top_rated_model/top_rated_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/upcoming_model/upcoming_model_response_model.dart';
 import 'package:movies_app/core/network/local/top_rated_local_database.dart';
 import 'package:movies_app/core/network/local/upcoming_local_database.dart';
 import 'dart:convert';

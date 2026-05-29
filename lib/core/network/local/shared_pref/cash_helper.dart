@@ -1,11 +1,11 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CashHelper {
   static SharedPreferences? sharedPreferences;
 
   static init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences = await SharedPreferences
+        .getInstance(); // BRAIN_EXCEPTION: CashHelper IS the sanctioned SharedPreferences wrapper
   }
 
   static dynamic getDate({required String key}) {

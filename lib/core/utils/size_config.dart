@@ -12,4 +12,11 @@ class SizeConfig {
 
     ///Note: It won't Rebuild UI after first build!!
   }
+
+  static SizedBox verticalSpace(double height) => SizedBox(
+      height:
+          height); // BRAIN_EXCEPTION: these ARE the SizeConfig helper methods themselves
+  static SizedBox horizontalSpace(double width) => SizedBox(
+      width:
+          width); // BRAIN_EXCEPTION: these ARE the SizeConfig helper methods themselves
 }

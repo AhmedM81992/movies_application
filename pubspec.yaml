@@ -26,14 +26,22 @@ dependencies:
   http: any
   firebase_core: any
   cloud_firestore: any
+  connectivity_plus: ^6.1.0
+  oktoast: ^3.4.0
+  overlay_support: ^2.1.0
   youtube_player_flutter: ^9.1.2
   another_flutter_splash_screen: any
   sqflite: any
-  bloc: any
+  bloc: ^9.0.1
+  flutter_bloc: ^9.1.1
+  dartz: any
+  get_it: any
+  equatable: ^2.0.7
   easy_localization: any
   dio: any
   shared_preferences: ^2.5.2
   path: any
+  sizer: ^2.0.15
   win32: ^5.11.0
   flutter_inappwebview: ^6.1.5
   path_provider: ^2.1.5

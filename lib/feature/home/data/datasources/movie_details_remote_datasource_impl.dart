@@ -1,0 +1,27 @@
+import 'package:movies_app/core/network/dio_helper.dart';
+import '../../../../core/network/remote/end_points.dart';
+import 'package:movies_app/feature/home/data/models/details_model/details_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/results_model/results_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/similar_to_model/similar_to_model_response_model.dart';
+import 'movie_details_remote_datasource.dart';
+
+class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
+  MovieDetailsRemoteDataSourceImpl();
+
+  @override
+  Future<DetailsModel> getDetails(int movieId) async {
+    final response = await DioHelper.getData(
+      url: '${EndPoints.details}$movieId',
+    );
+    return DetailsModel.fromJson(response.data);
+  }
+
+  @override
+  Future<List<Results>> getSimilar(int movieId) async {
+    final response = await DioHelper.getData(
+      url: '${EndPoints.details}$movieId${EndPoints.similar}',
+    );
+    final similarModel = SimilarToModel.fromJson(response.data);
+    return similarModel.results ?? [];
+  }
+}

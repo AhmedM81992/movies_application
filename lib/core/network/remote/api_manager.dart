@@ -1,21 +1,20 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/network/remote/dio_helper.dart';
-import 'package:movies_app/models/DetailsModel.dart';
-import 'package:movies_app/models/PopularModel.dart';
-import 'package:movies_app/models/SearchModel.dart';
-import 'package:movies_app/models/SimilarToModel.dart';
-import 'package:movies_app/models/TopRatedModel.dart';
-import 'package:movies_app/models/TrailerModel.dart';
-import 'package:movies_app/models/UpComingModel.dart';
+import 'package:movies_app/core/network/dio_helper.dart';
+import 'package:movies_app/feature/home/data/models/details_model/details_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/popular_model/popular_model_response_model.dart';
+import 'package:movies_app/feature/search/data/models/search_model/search_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/similar_to_model/similar_to_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/top_rated_model/top_rated_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/trailer_model/trailer_model_response_model.dart';
+import 'package:movies_app/feature/home/data/models/upcoming_model/upcoming_model_response_model.dart';
 import 'package:movies_app/core/components/constants.dart';
 import 'package:movies_app/core/network/remote/end_points.dart';
 
-import '../../../models/MovieDiscoverModel.dart';
-import '../../../models/MoviesListModel.dart';
+import 'package:movies_app/feature/browse/data/models/movie_discover_model/movie_discover_model_response_model.dart';
+import 'package:movies_app/feature/browse/data/models/movies_list_model/movies_list_model_response_model.dart';
 
 class ApiManager {
   // static Future<PopularModel?> getPopular() async {
@@ -172,6 +171,7 @@ class ApiManager {
   }
 
   static Future<DetailsModel?> getDetails(String id) async {
+    //movie details page
     try {
       final response = await DioHelper.getData(
         url: "${EndPoints.details}$id",
@@ -210,6 +210,7 @@ class ApiManager {
   }
 
   static Future<PopularModel?> getPopular() async {
+    //first item on home screen
     try {
       final response = await DioHelper.getData(
         url: EndPoints.popular,

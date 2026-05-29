@@ -5,7 +5,7 @@ import 'package:movies_app/core/network/local/fetch_api.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../models/UpComingModel.dart';
+import 'package:movies_app/feature/home/data/models/upcoming_model/upcoming_model_response_model.dart';
 
 class UpComingLocalDatabase {
   static Database? _database;
