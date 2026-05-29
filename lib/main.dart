@@ -18,7 +18,7 @@ import 'package:movies_app/core/network/local/popular_local_database.dart';
 import 'package:movies_app/core/services/injection_container.dart' as get_it;
 import 'package:movies_app/core/utils/app_colors.dart';
 import 'package:movies_app/core/utils/bloc_observer.dart';
-import 'package:movies_app/feature/bookmarks/presentation/business_logic/cubit/bookmark_cubit.dart';
+import 'package:movies_app/feature/bookmarks/presentation/business_logic/bloc/bookmark_bloc.dart';
 import 'package:movies_app/feature/browse/presentation/business_logic/bloc/browse_bloc.dart';
 import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_bloc.dart';
 import 'package:movies_app/feature/home/presentation/business_logic/bloc/movie_details_bloc.dart';
@@ -57,8 +57,8 @@ Future<void> main() async {
         supportedLocales: const [Locale('en'), Locale('ar')],
         path: 'assets/translations',
         assetLoader: const CodegenLoader(),
-        fallbackLocale: const Locale('ar'),
-        startLocale: const Locale('ar'),
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale('en'),
         child: const MoviesApp(),
       ),
     ),
@@ -103,8 +103,9 @@ class MoviesApp extends StatelessWidget {
                                 BlocProvider<HomeScreenBloc>(
                                   create: (_) => get_it.sl<HomeScreenBloc>(),
                                 ),
-                                BlocProvider<BookmarkCubit>(
-                                  create: (_) => get_it.sl<BookmarkCubit>(),
+                                BlocProvider<BookmarkBloc>(
+                                  create: (_) => get_it.sl<BookmarkBloc>()
+                                    ..add(ListenFavoritesEvent()),
                                 ),
                                 BlocProvider<BottomNavCubit>(
                                   create: (_) => get_it.sl<BottomNavCubit>(),

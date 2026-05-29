@@ -1,16 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/feature/bookmarks/domain/entities/bookmark_movie/bookmark_movie_entity.dart';
 import 'package:movies_app/feature/home/data/models/results_model/results_model_response_model.dart';
 import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/details_page.dart';
 import 'package:movies_app/core/components/constants.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
-
+import 'package:movies_app/core/shared_widgets/app_text.dart';
 import 'package:movies_app/core/shared/bookmark_container.dart';
 
-class WatchListItems extends StatelessWidget {
-  final Results result;
+extension BookmarkMovieEntityToResults on BookmarkMovieEntity {
+  Results toResults() => Results(
+        fireBaseId: fireBaseId,
+        id: id,
+        title: title,
+        backdropPath: backdropPath,
+        posterPath: posterPath,
+        releaseDate: releaseDate,
+        voteAverage: voteAverage,
+      );
+}
 
-  const WatchListItems({required this.result});
+class WatchListItems extends StatelessWidget {
+  final BookmarkMovieEntity entity;
+
+  const WatchListItems({super.key, required this.entity});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class WatchListItems extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, DetailsPage.routeName,
-                        arguments: result.id);
+                        arguments: entity.id);
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
@@ -34,7 +47,7 @@ class WatchListItems extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.118,
                       child: CachedNetworkImage(
                         imageUrl: Constants.imageBaseUrl +
-                            (result.backdropPath ?? ""),
+                            (entity.backdropPath ?? ""),
                         fit: BoxFit.cover,
                         progressIndicatorBuilder:
                             (context, url, downloadProgress) => Center(
@@ -45,7 +58,7 @@ class WatchListItems extends StatelessWidget {
                     ),
                   ),
                 ),
-                MyBookmarkWidget(moviesList: result),
+                MyBookmarkWidget(moviesList: entity.toResults()),
               ]),
               Container(
                 width: MediaQuery.sizeOf(context).width * 0.476,
@@ -55,30 +68,30 @@ class WatchListItems extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        result.title ?? "",
-                        style: TextStyle(
+                      AppText(
+                        entity.title ?? "",
+                        style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
                             color: Colors.white),
                       ),
-                      Text(
-                        result.releaseDate ?? "",
-                        style: TextStyle(
+                      AppText(
+                        entity.releaseDate ?? "",
+                        style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
                             color: Colors.white),
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             size: 20,
                             color: Color(0xFFFFBB3B),
                           ),
-                          Text(
-                            result.voteAverage?.toStringAsFixed(1) ?? "",
-                            style: TextStyle(
+                          AppText(
+                            entity.voteAverage?.toStringAsFixed(1) ?? "",
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 13,
                                 color: Colors.white),
@@ -91,7 +104,7 @@ class WatchListItems extends StatelessWidget {
               )
             ],
           ),
-          Divider(
+          const Divider(
             color: MyThemeData.searchBox,
             endIndent: 10,
             indent: 10,

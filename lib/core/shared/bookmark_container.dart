@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/feature/bookmarks/presentation/business_logic/cubit/bookmark_cubit.dart';
+import 'package:movies_app/feature/bookmarks/domain/entities/bookmark_movie/bookmark_movie_entity.dart';
+import 'package:movies_app/feature/bookmarks/presentation/business_logic/bloc/bookmark_bloc.dart';
+import 'package:movies_app/feature/bookmarks/presentation/business_logic/bloc/bookmark_state.dart';
 import 'package:movies_app/feature/home/data/models/results_model/results_model_response_model.dart';
 
 class BookmarkClipper extends CustomClipper<Path> {
@@ -30,10 +32,9 @@ class MyBookmarkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookmarkCubit, BookmarkState>(
+    return BlocBuilder<BookmarkBloc, BookmarkState>(
       builder: (context, state) {
-        final isClicked =
-            context.read<BookmarkCubit>().isFavorite(moviesList.id ?? 0);
+        final isClicked = state.favoriteIds.contains(moviesList.id ?? 0);
 
         return ClipPath(
           clipper: BookmarkClipper(),
@@ -52,7 +53,19 @@ class MyBookmarkWidget extends StatelessWidget {
                 ),
                 onPressed: () {
                   debugPrint(moviesList.title);
-                  context.read<BookmarkCubit>().toggleFavorite(moviesList);
+                  final bookmarkEntity = BookmarkMovieEntity(
+                    id: moviesList.id,
+                    title: moviesList.title ?? '',
+                    backdropPath: moviesList.backdropPath,
+                    posterPath: moviesList.posterPath,
+                    releaseDate: moviesList.releaseDate,
+                    voteAverage: moviesList.voteAverage,
+                    fireBaseId: moviesList.fireBaseId,
+                  );
+                  context.read<BookmarkBloc>().add(ToggleFavoriteEvent(
+                        movieId: moviesList.id ?? 0,
+                        movie: bookmarkEntity,
+                      ));
                 },
               ),
             ),

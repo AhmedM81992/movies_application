@@ -23,7 +23,14 @@ import '../../feature/home/domain/usecases/get_top_rated_usecase.dart';
 import '../../feature/home/domain/usecases/get_upcoming_usecase.dart';
 import '../../feature/home/presentation/business_logic/bloc/home_screen_bloc.dart';
 import '../../feature/home/presentation/business_logic/bloc/movie_details_bloc.dart';
-import '../../feature/bookmarks/presentation/business_logic/cubit/bookmark_cubit.dart';
+import '../../feature/bookmarks/data/datasources/bookmark_remote_datasource.dart';
+import '../../feature/bookmarks/data/datasources/bookmark_remote_datasource_impl.dart';
+import '../../feature/bookmarks/data/repositories/bookmark_repository_impl.dart';
+import '../../feature/bookmarks/domain/repositories/bookmark_repository.dart';
+import '../../feature/bookmarks/domain/usecases/get_favorites_usecase.dart';
+import '../../feature/bookmarks/domain/usecases/add_favorite_usecase.dart';
+import '../../feature/bookmarks/domain/usecases/delete_favorite_usecase.dart';
+import '../../feature/bookmarks/presentation/business_logic/bloc/bookmark_bloc.dart';
 import '../../feature/home/presentation/business_logic/cubit/bottom_nav_cubit.dart';
 import '../../feature/search/data/datasources/search_remote_datasource.dart';
 import '../../feature/search/data/datasources/search_remote_datasource_impl.dart';
@@ -56,6 +63,8 @@ Future<void> init() async {
       () => SearchRemoteDataSourceImpl());
   sl.registerLazySingleton<BrowseRemoteDataSource>(
       () => BrowseRemoteDataSourceImpl());
+  sl.registerLazySingleton<BookmarkRemoteDataSource>(
+      () => BookmarkRemoteDataSourceImpl());
 
   // Repositories
   sl.registerLazySingleton<HomeRepository>(
@@ -66,6 +75,8 @@ Future<void> init() async {
       () => SearchRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<BrowseRepository>(
       () => BrowseRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton<BookmarkRepository>(
+      () => BookmarkRepositoryImpl(remoteDataSource: sl()));
 
   // UseCases
   sl.registerLazySingleton(() => GetPopularUseCase(sl()));
@@ -77,6 +88,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SearchMoviesUseCase(sl()));
   sl.registerLazySingleton(() => GetGenresUseCase(sl()));
   sl.registerLazySingleton(() => GetMovieDiscoverUseCase(sl()));
+  sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
+  sl.registerLazySingleton(() => AddFavoriteUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteFavoriteUseCase(sl()));
 
   // Feature BLoCs
   sl.registerFactory<HomeScreenBloc>(() => HomeScreenBloc(
@@ -94,10 +108,14 @@ Future<void> init() async {
         getGenresUseCase: sl(),
         getMovieDiscoverUseCase: sl(),
       ));
+  sl.registerFactory<BookmarkBloc>(() => BookmarkBloc(
+        getFavoritesUseCase: sl(),
+        addFavoriteUseCase: sl(),
+        deleteFavoriteUseCase: sl(),
+      ));
 
   // Cubits
   sl.registerFactory<BottomNavCubit>(() => BottomNavCubit());
-  sl.registerFactory<BookmarkCubit>(() => BookmarkCubit());
   sl.registerFactory<ConnectivityCubit>(
     () => ConnectivityCubit(connectivity: sl()),
   );
