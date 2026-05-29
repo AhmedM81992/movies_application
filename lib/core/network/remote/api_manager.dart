@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/network/dio_helper.dart';
+import 'package:movies_app/core/network/remote/dio_helper.dart';
 import 'package:movies_app/feature/home/data/models/details_model/details_model_response_model.dart';
 import 'package:movies_app/feature/home/data/models/popular_model/popular_model_response_model.dart';
 import 'package:movies_app/feature/search/data/models/search_model/search_model_response_model.dart';
