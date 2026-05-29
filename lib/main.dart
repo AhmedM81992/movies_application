@@ -14,7 +14,7 @@ import 'package:sizer/sizer.dart';
 import 'package:movies_app/config/language/codegen_loader.g.dart';
 import 'package:movies_app/core/network/check_connectivity/cubit/connectivity_cubit.dart';
 import 'package:movies_app/core/network/check_connectivity/presentation/no_internet_screen.dart';
-import 'package:movies_app/core/network/local/popular_local_database.dart';
+import 'package:movies_app/core/local_cache/popular_local_database.dart';
 import 'package:movies_app/core/services/injection_container.dart' as get_it;
 import 'package:movies_app/core/utils/app_colors.dart';
 import 'package:movies_app/core/utils/bloc_observer.dart';

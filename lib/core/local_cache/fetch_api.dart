@@ -3,11 +3,11 @@ import 'package:movies_app/feature/home/data/models/details_model/details_model_
 import 'package:movies_app/feature/home/data/models/popular_model/popular_model_response_model.dart';
 import 'package:movies_app/feature/home/data/models/top_rated_model/top_rated_model_response_model.dart';
 import 'package:movies_app/feature/home/data/models/upcoming_model/upcoming_model_response_model.dart';
-import 'package:movies_app/core/network/local/top_rated_local_database.dart';
-import 'package:movies_app/core/network/local/upcoming_local_database.dart';
+import 'package:movies_app/core/local_cache/top_rated_local_database.dart';
+import 'package:movies_app/core/local_cache/upcoming_local_database.dart';
 import 'dart:convert';
 
-import '../remote/api_manager.dart';
+import '../network/remote/api_manager.dart';
 import 'details_local_database.dart';
 import 'popular_local_database.dart'; // Import your local database handling class
 

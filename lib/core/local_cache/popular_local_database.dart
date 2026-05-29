@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/network/local/fetch_api.dart';
+import 'package:movies_app/core/local_cache/fetch_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
