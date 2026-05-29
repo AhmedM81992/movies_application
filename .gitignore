@@ -78,3 +78,5 @@ Memory.md
 # Windows shortcuts — local only
 *.lnk
 # END: AI agent brain
+.ai_brain
+ai_brain
