@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:movies_app/core/utils/size_config.dart';
 import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/popular_container.dart';
 import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/top_rated_container.dart';
 import 'package:movies_app/feature/home/presentation/widgets/home_sub_items/upcoming_container.dart';
@@ -18,13 +19,15 @@ class _MobileHomeTabState extends State<MobileHomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      const PopularContainer(),
-      SizedBox(height: MediaQuery.sizeOf(context).height * 0.010),
-      const UpComingContainer(),
-      SizedBox(height: MediaQuery.sizeOf(context).height * 0.010),
-      const TopRatedContainer(),
-      SizedBox(height: MediaQuery.sizeOf(context).height * 0.010),
-    ]);
+    return SingleChildScrollView(
+      child: Column(children: [
+        const PopularContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+        const UpComingContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+        const TopRatedContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+      ]),
+    );
   }
 }

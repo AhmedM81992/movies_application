@@ -1,5 +1,6 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/utils/size_config.dart';
 import 'package:movies_app/feature/home/presentation/screens/mobile/mobile_home_screen.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 
@@ -21,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //SizedBox(height: MediaQuery.sizeOf(context).height),
+            SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.05),
             const Spacer(),
             Padding(
               padding: EdgeInsets.only(

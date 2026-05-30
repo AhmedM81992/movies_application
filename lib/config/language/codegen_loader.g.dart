@@ -57,7 +57,10 @@ class CodegenLoader extends AssetLoader {
     'saveChanges': 'حفظ التغييرات',
     'cancel': 'إلغاء',
     'apply': 'تطبيق',
-    'close': 'إغلاق'
+    'close': 'إغلاق',
+    'categoryBrowse': 'تصفح الفئات',
+    'browse': 'تصفح',
+    'watchlist': 'قائمة المشاهدة'
   };
 
   static const Map<String, dynamic> en = {
@@ -107,7 +110,10 @@ class CodegenLoader extends AssetLoader {
     'saveChanges': 'Save Changes',
     'cancel': 'Cancel',
     'apply': 'Apply',
-    'close': 'Close'
+    'close': 'Close',
+    'categoryBrowse': 'Category Browse',
+    'browse': 'Browse',
+    'watchlist': 'Watchlist'
   };
 
   static const Map<String, Map<String, dynamic>> mapLocales = {

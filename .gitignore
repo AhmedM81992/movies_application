@@ -63,3 +63,20 @@ android/local.properties
 pubspec.lock
 ios/RunnerTests/RunnerTests.swift
 android/app/.cxx/
+
+# BEGIN: AI agent brain — local only, never push to client repos
+.ai_brain/
+ai_brain/
+CLAUDE.md
+.cursorrules
+AGENTS.md
+Memory.md
+.roorules
+.clinerules
+.github/copilot-instructions.md
+
+# Windows shortcuts — local only
+*.lnk
+# END: AI agent brain
+.ai_brain
+ai_brain

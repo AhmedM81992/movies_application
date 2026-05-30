@@ -19,4 +19,6 @@ abstract class AppColors {
   static const Color crossColor = Color(0xFFCCD2E3);
   static const Color categoryColor = Color(0xFF9D9D9D);
   static const Color orderColor = Color(0xFF141416);
+  static const Color royalBlue = Color(0xFF4169E1);
+  static const Color bgBody = Color(0xFFF5F5F5);
 }

@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/components/constants.dart';
-import 'package:movies_app/core/network/local/fetch_api.dart';
+import 'package:movies_app/core/utils/load_status.dart';
+import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_bloc.dart';
+import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_state.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/shared/bookmark_container.dart';
 
@@ -37,18 +40,17 @@ class _UpComingContainerState extends State<UpComingContainer> {
             ),
           ),
           Expanded(
-            child: FutureBuilder(
-              future: FetchAPI.getUpcoming(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+            child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+              builder: (context, state) {
+                if (state.upcomingStatus == LoadStatus.loading) {
                   return Center(
                       child: CircularProgressIndicator(
                           color: MyThemeData.selectedColor));
                 }
-                if (snapshot.hasError) {
+                if (state.upcomingStatus == LoadStatus.error) {
                   return Center(child: Text("Something Went Wrong!"));
                 }
-                var moviesList = snapshot.data?.results ?? [];
+                final moviesList = state.upcomingResults;
                 return ListView.builder(
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.sizeOf(context).width * 0.02),
