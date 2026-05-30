@@ -82,7 +82,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 final results = Results.fromDetailsModel(movieDetail);
                 debugPrint("$movieId");
                 return ListView(children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.sizeOf(context).height,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Container(
+                              child: SizedBox(
                                 width: MediaQuery.sizeOf(context).width * 0.4,
                                 child: Stack(
                                   children: [

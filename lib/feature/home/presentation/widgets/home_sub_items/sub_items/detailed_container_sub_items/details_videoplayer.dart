@@ -8,7 +8,6 @@ import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/shared/bookmark_container.dart';
 import 'package:movies_app/core/shared/full_screen_video_player.dart';
 import 'package:movies_app/core/shared_widgets/app_bar_widget.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../../../../core/utils/you_tube_video_player.dart';
 import 'package:movies_app/feature/home/data/models/trailer_model/trailer_model_response_model.dart';
@@ -24,16 +23,17 @@ class DetailsVideoPlayer extends StatefulWidget {
 }
 
 class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
-  late Future<String?> _trailerUrlFuture;
   late Future<String?> _movieTitleFuture;
   late Future<String?> _movieDetailsFuture;
-  late YoutubePlayerController _controller;
   bool _isFullScreen = false;
+  String? _trailerUrl;
 
   @override
   void initState() {
     super.initState();
-    _trailerUrlFuture = _fetchTrailerUrl();
+    _fetchTrailerUrl().then((url) {
+      if (mounted) setState(() => _trailerUrl = url);
+    });
     _movieTitleFuture = _fetchMovieTitle();
     _movieDetailsFuture = _fetchMovieDetails();
   }
@@ -41,7 +41,6 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 
   Future<String?> _fetchTrailerUrl() async {
@@ -116,15 +115,17 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
           Expanded(
             child: Stack(
               children: [
-                YouTubeVideoPlayer(
-                  // ignore: unnecessary_brace_in_string_interps
-                  videoUrl:
-                      "${_trailerUrlFuture}", //"https://www.youtube.com/watch?v=SWV3vwlY2f0",
-                ),
+                if (_trailerUrl != null)
+                  YouTubeVideoPlayer(
+                    videoUrl: _trailerUrl!,
+                  )
+                else
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 if (!_isFullScreen)
                   Builder(
                     builder: (context) {
-                      final snapshot = _trailerUrlFuture;
                       return Stack(
                         children: [
                           Padding(
@@ -180,13 +181,13 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
                                   DeviceOrientation.landscapeLeft,
                                   DeviceOrientation.landscapeRight,
                                 ]);
-                                snapshot.then((data) {
+                                if (_trailerUrl != null) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           FullScreenVideoPlayer(
-                                        videoUrl: data!,
+                                        videoUrl: _trailerUrl!,
                                       ),
                                     ),
                                   ).then((value) {
@@ -199,7 +200,7 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
                                       DeviceOrientation.portraitDown,
                                     ]);
                                   });
-                                });
+                                }
                               },
                               child: Icon(Icons.fullscreen),
                             ),
