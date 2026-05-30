@@ -114,7 +114,7 @@ Future<void> init() async {
         getGenresUseCase: sl(),
         getMovieDiscoverUseCase: sl(),
       ));
-  sl.registerFactory<BookmarkBloc>(() => BookmarkBloc(
+  sl.registerLazySingleton<BookmarkBloc>(() => BookmarkBloc(
         getFavoritesUseCase: sl(),
         addFavoriteUseCase: sl(),
         deleteFavoriteUseCase: sl(),

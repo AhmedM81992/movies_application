@@ -22,7 +22,15 @@ class BookmarkRepositoryImpl implements BookmarkRepository {
   @override
   Future<Either<Failure, void>> addFavorite(BookmarkMovieEntity movie) async {
     try {
-      final model = movie as BookmarkMovieResponseModel;
+      final model = BookmarkMovieResponseModel(
+        id: movie.id,
+        title: movie.title,
+        backdropPath: movie.backdropPath,
+        posterPath: movie.posterPath,
+        releaseDate: movie.releaseDate,
+        voteAverage: movie.voteAverage,
+        fireBaseId: movie.fireBaseId,
+      );
       await remoteDataSource.addFavorite(model);
       return const Right(null);
     } catch (e) {
