@@ -137,7 +137,10 @@ class MoviesApp extends StatelessWidget {
                           final String? movieId = ModalRoute.of(context)
                               ?.settings
                               .arguments as String?;
-                          return DetailsVideoPlayer(movieId: movieId!);
+                          return BlocProvider<BookmarkBloc>.value(
+                            value: get_it.sl<BookmarkBloc>(),
+                            child: DetailsVideoPlayer(movieId: movieId!),
+                          );
                         },
                       },
                       theme: ThemeData(

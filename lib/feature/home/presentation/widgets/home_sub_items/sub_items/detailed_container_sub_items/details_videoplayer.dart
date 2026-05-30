@@ -48,9 +48,11 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
     try {
       final details = await ApiManager.getTrailer(widget.movieId);
       final trailer = details?.results?.firstWhere(
-        (video) => video.type == 'Trailer',
+        (video) => video.site == 'YouTube',
         orElse: () => TrailerResults(),
       );
+      debugPrint(
+          'youtube URL: https://www.youtube.com/watch?v=${trailer?.key}');
       return trailer != null
           ? 'https://www.youtube.com/watch?v=${trailer.key}'
           : null;
@@ -115,7 +117,9 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
             child: Stack(
               children: [
                 YouTubeVideoPlayer(
-                  videoUrl: "https://www.youtube.com/watch?v=SWV3vwlY2f0",
+                  // ignore: unnecessary_brace_in_string_interps
+                  videoUrl:
+                      "${_trailerUrlFuture}", //"https://www.youtube.com/watch?v=SWV3vwlY2f0",
                 ),
                 if (!_isFullScreen)
                   Builder(
