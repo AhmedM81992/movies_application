@@ -23,15 +23,14 @@ Whether you're looking for the latest trending movies, searching for a specific 
 
 ## 📸 Screenshots
 
-*(Replace the placeholder links below with your actual in-app screenshots once they are ready!)*
-
 | Home Screen | Search Screen | Movie Details | Bookmarks |
 | :---: | :---: | :---: | :---: |
-| <img src="[Insert Home Screen Screenshot URL here]" width="200"/> | <img src="[Insert Search Screen Screenshot URL here]" width="200"/> | <img src="[Insert Details Screen Screenshot URL here]" width="200"/> | <img src="[Insert Bookmarks Screenshot URL here]" width="200"/> |
+| <img src="<img width="430" height="920" alt="home_screen" src="https://github.com/user-attachments/assets/cb01d446-2f35-4119-882b-72398cab3cdd" />" width="200"/> | <img src="<img width="410" height="900" alt="search_screen" src="https://github.com/user-attachments/assets/3519af87-5f46-4919-91f8-1d86fa71df95" />" width="200"/> | <img src="<img width="418" height="904" alt="details_screen" src="https://github.com/user-attachments/assets/84b592d8-8f01-4672-a97e-5db3eb502a38" />" width="200"/> | <img src="<img width="410" height="899" alt="wish_list_screen" src="https://github.com/user-attachments/assets/223bb66f-1e50-4077-ad4f-5182b5a7f6d6" />" width="200"/> |
 
-| Browse Categories | Localization (Arabic) | No Internet State | Trailer Player |
+| Browse Categories | Trailer Player | No Internet State | Trailer Player Full screen |
 | :---: | :---: | :---: | :---: |
-| <img src="[Insert Browse Screenshot URL here]" width="200"/> | <img src="[Insert Arabic Localization Screenshot URL here]" width="200"/> | <img src="[Insert No Internet Screenshot URL here]" width="200"/> | <img src="[Insert Video Player Screenshot URL here]" width="200"/> |
+| <img src="<img width="408" height="900" alt="browse_screen" src="https://github.com/user-attachments/assets/6ffe54dc-e46f-4aee-a7f0-60073c9cd12e" />" width="200"/> | <img src="<img width="420" height="921" alt="video_screen" src="https://github.com/user-attachments/assets/187d91d7-e76e-47bd-9143-5242d4d2d1b8" />" width="200"/> | <img src="<img width="419" height="906" alt="image" src="https://github.com/user-attachments/assets/78ab28ea-cced-494b-9114-da999f3cdb96" />
+" width="200"/> | <img src="<img width="436" height="947" alt="full_video_screen" src="https://github.com/user-attachments/assets/4930a2c5-e0fe-481a-a312-c4273363d9bd" />" width="200"/> |
 
 ---
 
