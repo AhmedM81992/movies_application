@@ -19,13 +19,15 @@ class _MobileHomeTabState extends State<MobileHomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      const PopularContainer(),
-      SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
-      const UpComingContainer(),
-      SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
-      const TopRatedContainer(),
-      SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
-    ]);
+    return SingleChildScrollView(
+      child: Column(children: [
+        const PopularContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+        const UpComingContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+        const TopRatedContainer(),
+        SizeConfig.verticalSpace(MediaQuery.sizeOf(context).height * 0.010),
+      ]),
+    );
   }
 }

@@ -6,7 +6,9 @@ import '../../feature/browse/domain/repositories/browse_repository.dart';
 import '../../feature/browse/domain/usecases/get_genres_usecase.dart';
 import '../../feature/browse/domain/usecases/get_movie_discover_usecase.dart';
 import '../../feature/browse/presentation/business_logic/bloc/browse_bloc.dart';
+import '../../feature/home/data/datasources/home_local_datasource.dart';
 import '../../feature/home/data/datasources/home_remote_datasource.dart';
+import '../../feature/home/data/datasources/movie_details_local_datasource.dart';
 import '../../feature/home/data/datasources/movie_details_remote_datasource.dart';
 import '../../feature/home/data/repositories_impl/home_repository_impl.dart';
 import '../../feature/home/data/repositories_impl/movie_details_repository_impl.dart';
@@ -61,11 +63,20 @@ Future<void> init() async {
   sl.registerLazySingleton<BookmarkRemoteDataSource>(
       () => BookmarkRemoteDataSourceImpl());
 
+  // Local datasources
+  sl.registerLazySingleton<HomeLocalDataSource>(
+    () => HomeLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<MovieDetailsLocalDataSource>(
+    () => MovieDetailsLocalDataSourceImpl(),
+  );
+
   // Repositories
   sl.registerLazySingleton<HomeRepository>(
-      () => HomeRepositoryImpl(remoteDataSource: sl()));
-  sl.registerLazySingleton<MovieDetailsRepository>(
-      () => MovieDetailsRepositoryImpl(remoteDataSource: sl()));
+      () => HomeRepositoryImpl(remoteDataSource: sl(), localDataSource: sl()));
+  sl.registerLazySingleton<MovieDetailsRepository>(() =>
+      MovieDetailsRepositoryImpl(
+          remoteDataSource: sl(), localDataSource: sl()));
   sl.registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<BrowseRepository>(

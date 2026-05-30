@@ -38,72 +38,79 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
   Widget build(BuildContext context) {
     return Container(
       color: MyThemeData.primaryColor,
-      child: Column(
-        children: [
-          const AppBarWidget(title: 'Movies'),
-          Expanded(
-            child: BlocBuilder<BottomNavCubit, BottomNavState>(
-              builder: (context, state) {
-                return Container(
-                  child: _tabs[state.currentIndex],
-                );
-              },
-            ),
-          ),
-          Container(
-            height: MediaQuery.sizeOf(context).height * 0.0748,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
+      child: BlocBuilder<BottomNavCubit, BottomNavState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              state.currentIndex != 0
+                  ? SizedBox.shrink()
+                  : const AppBarWidget(title: 'Movies'),
+              Expanded(
+                child: BlocBuilder<BottomNavCubit, BottomNavState>(
+                  builder: (context, state) {
+                    return Container(
+                      child: _tabs[state.currentIndex],
+                    );
+                  },
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    spreadRadius: 10,
-                    blurRadius: 10,
-                  )
-                ]),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(0.0),
-                topRight: Radius.circular(0.0),
               ),
-              child: BlocBuilder<BottomNavCubit, BottomNavState>(
-                builder: (context, state) {
-                  return BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: MyThemeData.primaryColor,
-                    onTap: (value) {
-                      context.read<BottomNavCubit>().changeTab(value);
+              Container(
+                clipBehavior: Clip.antiAlias,
+                height: MediaQuery.sizeOf(context).height * 0.0748,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black38,
+                        spreadRadius: 0.2,
+                        blurRadius: 0.2,
+                      )
+                    ]),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(0.0),
+                    topRight: Radius.circular(0.0),
+                  ),
+                  child: BlocBuilder<BottomNavCubit, BottomNavState>(
+                    builder: (context, state) {
+                      return BottomNavigationBar(
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: MyThemeData.primaryColor,
+                        onTap: (value) {
+                          context.read<BottomNavCubit>().changeTab(value);
+                        },
+                        iconSize: 20,
+                        selectedFontSize: 10,
+                        unselectedFontSize: 10,
+                        currentIndex: state.currentIndex,
+                        selectedItemColor: MyThemeData.selectedColor,
+                        showSelectedLabels: true,
+                        showUnselectedLabels: true,
+                        unselectedItemColor: MyThemeData.whiteColor,
+                        selectedIconTheme: const IconThemeData(
+                            color: MyThemeData.selectedColor),
+                        items: const [
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.house), label: "HOME"),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.search), label: "SEARCH"),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.movie), label: "BROWSE"),
+                          BottomNavigationBarItem(
+                              icon: Icon(Icons.book), label: "WATCHLIST"),
+                        ],
+                      );
                     },
-                    iconSize: 20,
-                    selectedFontSize: 10,
-                    unselectedFontSize: 10,
-                    currentIndex: state.currentIndex,
-                    selectedItemColor: MyThemeData.selectedColor,
-                    showSelectedLabels: true,
-                    showUnselectedLabels: true,
-                    unselectedItemColor: MyThemeData.whiteColor,
-                    selectedIconTheme:
-                        const IconThemeData(color: MyThemeData.selectedColor),
-                    items: const [
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.house), label: "HOME"),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.search), label: "SEARCH"),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.movie), label: "BROWSE"),
-                      BottomNavigationBarItem(
-                          icon: Icon(Icons.book), label: "WATCHLIST"),
-                    ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

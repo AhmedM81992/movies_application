@@ -14,7 +14,6 @@ import 'package:sizer/sizer.dart';
 import 'package:movies_app/config/language/codegen_loader.g.dart';
 import 'package:movies_app/core/network/check_connectivity/cubit/connectivity_cubit.dart';
 import 'package:movies_app/core/network/check_connectivity/presentation/no_internet_screen.dart';
-import 'package:movies_app/core/local_cache/popular_local_database.dart';
 import 'package:movies_app/core/services/injection_container.dart' as get_it;
 import 'package:movies_app/core/utils/app_colors.dart';
 import 'package:movies_app/core/utils/bloc_observer.dart';
@@ -45,7 +44,6 @@ Future<void> main() async {
 
   await dotenv.load(fileName: '.env');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await PopularLocalDatabase.initDatabase();
 
   FirebaseFirestore.instance.disableNetwork();
 
@@ -119,9 +117,15 @@ class MoviesApp extends StatelessWidget {
                               ],
                               child: const MobileHomeScreen(),
                             ),
-                        DetailsPage.routeName: (_) =>
-                            BlocProvider<MovieDetailsBloc>(
-                              create: (_) => get_it.sl<MovieDetailsBloc>(),
+                        DetailsPage.routeName: (_) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider<MovieDetailsBloc>(
+                                  create: (_) => get_it.sl<MovieDetailsBloc>(),
+                                ),
+                                BlocProvider<BookmarkBloc>.value(
+                                  value: get_it.sl<BookmarkBloc>(),
+                                ),
+                              ],
                               child: const DetailsPage(),
                             ),
                         MoviesForOneCategory.routeName: (_) =>

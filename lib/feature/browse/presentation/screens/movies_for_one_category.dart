@@ -11,19 +11,23 @@ import 'package:movies_app/feature/browse/presentation/widgets/category_movies_l
 
 class MoviesForOneCategory extends StatefulWidget {
   static const String routeName = "MoviesForOneCategory";
-  const MoviesForOneCategory({Key? key}) : super(key: key);
+  const MoviesForOneCategory({super.key});
 
   @override
   State<MoviesForOneCategory> createState() => _MoviesForOneCategoryState();
 }
 
 class _MoviesForOneCategoryState extends State<MoviesForOneCategory> {
+  bool _didLoad = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didLoad) return;
     final arguments = ModalRoute.of(context)!.settings.arguments as Map;
     final genreId = int.tryParse("${arguments["id"]}") ?? 0;
     context.read<BrowseBloc>().add(GetMovieDiscoverEvent(genreId));
+    _didLoad = true;
   }
 
   @override

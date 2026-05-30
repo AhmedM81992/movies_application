@@ -32,21 +32,27 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     emit(state.copyWith(query: event.query));
 
-    _debounce = Timer(const Duration(milliseconds: 500), () async {
-      emit(state.copyWith(status: LoadStatus.loading, results: []));
-
-      final result = await searchMoviesUseCase(event.query);
-      result.fold(
-        (failure) => emit(state.copyWith(
-          status: LoadStatus.error,
-          error: failure.message,
-        )),
-        (data) => emit(state.copyWith(
-          status: LoadStatus.success,
-          results: data,
-        )),
-      );
+    // Use a Completer to keep the event handler alive during the debounce delay.
+    final completer = Completer<void>();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      completer.complete();
     });
+
+    await completer.future;
+
+    emit(state.copyWith(status: LoadStatus.loading, results: []));
+
+    final result = await searchMoviesUseCase(event.query);
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: LoadStatus.error,
+        error: failure.message,
+      )),
+      (data) => emit(state.copyWith(
+        status: LoadStatus.success,
+        results: data,
+      )),
+    );
   }
 
   @override

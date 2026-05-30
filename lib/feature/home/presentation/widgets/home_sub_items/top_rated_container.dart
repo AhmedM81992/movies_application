@@ -59,117 +59,106 @@ class _TopRatedContainerState extends State<TopRatedContainer> {
                           top: MediaQuery.sizeOf(context).height * 0.01,
                           right: MediaQuery.sizeOf(context).width * 0.02,
                           left: MediaQuery.sizeOf(context).width * 0.02),
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.sizeOf(context).height * 0.235,
-                              width: MediaQuery.sizeOf(context).width * 0.25,
-                              child: Stack(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, DetailsPage.routeName,
-                                          arguments: moviesList[index].id);
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10)),
-                                      child: CachedNetworkImage(
-                                        imageUrl: Constants.imageBaseUrl +
-                                            (moviesList[index].posterPath ??
-                                                ""),
-                                        fit: BoxFit.cover,
-                                        progressIndicatorBuilder: (context, url,
-                                                downloadProgress) =>
-                                            Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                        color: MyThemeData
-                                                            .selectedColor,
-                                                        value: downloadProgress
-                                                            .progress)),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.235,
+                            width: MediaQuery.sizeOf(context).width * 0.25,
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, DetailsPage.routeName,
+                                        arguments: moviesList[index].id);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        topLeft: Radius.circular(10)),
+                                    child: CachedNetworkImage(
+                                      imageUrl: Constants.imageBaseUrl +
+                                          (moviesList[index].posterPath ?? ""),
+                                      fit: BoxFit.cover,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          Center(
+                                              child: CircularProgressIndicator(
+                                                  color:
+                                                      MyThemeData.selectedColor,
+                                                  value: downloadProgress
+                                                      .progress)),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    ),
+                                  ),
+                                ),
+                                MyBookmarkWidget(moviesList: moviesList[index]),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.sizeOf(context).height *
+                                          0.174),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10)),
+                                    child: Container(
+                                      color: Color(0xFF343534),
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.25,
+                                      height: MediaQuery.sizeOf(context).height,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                size: 15,
+                                                color: Color(0xFFFFBB3B),
+                                              ),
+                                              Text(
+                                                moviesList[index]
+                                                        .voteAverage
+                                                        ?.toStringAsFixed(1) ??
+                                                    "",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 10,
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            maxLines: 1,
+                                            moviesList[index].title ?? "",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 10,
+                                                color: Colors.white),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                moviesList[index].releaseDate ??
+                                                    "",
+                                                style: TextStyle(
+                                                    fontSize: 8,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.white),
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  MyBookmarkWidget(
-                                      moviesList: moviesList[index]),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: MediaQuery.sizeOf(context).height *
-                                            0.174),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10)),
-                                      child: Container(
-                                        color: Color(0xFF343534),
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.25,
-                                        height:
-                                            MediaQuery.sizeOf(context).height,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  size: 15,
-                                                  color: Color(0xFFFFBB3B),
-                                                ),
-                                                Text(
-                                                  moviesList[index]
-                                                          .voteAverage
-                                                          ?.toStringAsFixed(
-                                                              1) ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 10,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              maxLines: 1,
-                                              moviesList[index].title ?? "",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 10,
-                                                  color: Colors.white),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  moviesList[index]
-                                                          .releaseDate ??
-                                                      "",
-                                                  style: TextStyle(
-                                                      fontSize: 8,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Colors.white),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
