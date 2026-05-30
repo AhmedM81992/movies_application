@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '../../../../core/network/local/app_database_helper.dart';
 
 abstract class MovieDetailsLocalDataSource {
   Future<String?> getCachedById(String id);
@@ -11,41 +11,14 @@ abstract class MovieDetailsLocalDataSource {
 }
 
 class MovieDetailsLocalDataSourceImpl implements MovieDetailsLocalDataSource {
-  Database? _database;
+  final AppDatabaseHelper appDb;
+  MovieDetailsLocalDataSourceImpl({required this.appDb});
+
   final int _ttlMs = 24 * 60 * 60 * 1000;
-
-  Future<Database> _getDatabase() async {
-    _database ??= await _initDatabase();
-    return _database!;
-  }
-
-  Future<Database> _initDatabase() async {
-    final String path =
-        join(await getDatabasesPath(), 'movie_details_cache.db');
-    return await openDatabase(
-      path,
-      version: 2,
-      onCreate: (db, version) async {
-        await db.execute(
-          'CREATE TABLE movie_details_cache(id TEXT PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE similar_cache(id TEXT PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute(
-            'CREATE TABLE IF NOT EXISTS similar_cache(id TEXT PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-          );
-        }
-      },
-    );
-  }
 
   @override
   Future<String?> getCachedById(String id) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       'movie_details_cache',
       where: 'id = ?',
@@ -77,7 +50,7 @@ class MovieDetailsLocalDataSourceImpl implements MovieDetailsLocalDataSource {
 
   @override
   Future<void> cacheById(String id, String jsonData) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     await db.insert(
       'movie_details_cache',
       {
@@ -91,7 +64,7 @@ class MovieDetailsLocalDataSourceImpl implements MovieDetailsLocalDataSource {
 
   @override
   Future<void> clearById(String id) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     await db.delete(
       'movie_details_cache',
       where: 'id = ?',
@@ -101,7 +74,7 @@ class MovieDetailsLocalDataSourceImpl implements MovieDetailsLocalDataSource {
 
   @override
   Future<String?> getCachedSimilar(String id) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       'similar_cache',
       where: 'id = ?',
@@ -123,7 +96,7 @@ class MovieDetailsLocalDataSourceImpl implements MovieDetailsLocalDataSource {
 
   @override
   Future<void> cacheSimilar(String id, String jsonData) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     await db.insert(
       'similar_cache',
       {

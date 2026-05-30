@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/config/routes/route_arguments.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/utils/load_status.dart';
 import 'package:movies_app/core/shared_widgets/app_bar_widget.dart';
@@ -24,21 +25,20 @@ class _MoviesForOneCategoryState extends State<MoviesForOneCategory> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_didLoad) return;
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final genreId = int.tryParse("${arguments["id"]}") ?? 0;
-    context.read<BrowseBloc>().add(GetMovieDiscoverEvent(genreId));
+    final args = ModalRoute.of(context)!.settings.arguments as MoviesForOneCategoryArgs;
+    context.read<BrowseBloc>().add(GetMovieDiscoverEvent(args.id));
     _didLoad = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final args = ModalRoute.of(context)!.settings.arguments as MoviesForOneCategoryArgs;
     return Container(
       color: MyThemeData.backgroundColor,
       child: Column(
         children: [
           AppBarWidget(
-            title: "${arguments["name"]}",
+            title: args.name,
             backgroundColor: Colors.transparent,
           ),
           Expanded(

@@ -15,11 +15,12 @@ abstract class HomeRemoteDataSource {
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
-  HomeRemoteDataSourceImpl();
+  final DioHelper dioHelper;
+  HomeRemoteDataSourceImpl({required this.dioHelper});
 
   @override
   Future<List<Results>> getPopular() async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.popular,
       query: {'apiKey': Constants.apiKey},
     );
@@ -29,7 +30,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<List<Results>> getUpcoming() async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.upComing,
       query: {'apiKey': Constants.apiKey},
     );
@@ -39,7 +40,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<List<Results>> getTopRated() async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.topRated,
       query: {'apiKey': Constants.apiKey},
     );
@@ -49,7 +50,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<DetailsModel> getDetails(int movieId) async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: '${EndPoints.details}$movieId',
     );
     return DetailsModel.fromJson(response.data);

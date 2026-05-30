@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/config/language/local_key.g.dart';
+import 'package:movies_app/config/routes/route_arguments.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
+import 'package:movies_app/core/shared_widgets/app_text.dart';
 import 'package:movies_app/core/utils/load_status.dart';
 import 'package:movies_app/core/utils/size_config.dart';
 import 'package:movies_app/feature/browse/presentation/business_logic/bloc/browse_bloc.dart';
@@ -29,11 +33,11 @@ class _BrowseTabState extends State<BrowseTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizeConfig.verticalSpace(16),
-          const Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Text(
-              'Category Browse',
-              style: TextStyle(
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: AppText(
+              LocalKeys.categoryBrowse.tr(),
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -70,10 +74,10 @@ class _BrowseTabState extends State<BrowseTab> {
                           Navigator.pushNamed(
                             context,
                             MoviesForOneCategory.routeName,
-                            arguments: {
-                              "id": categoryList[index].id,
-                              "name": categoryList[index].name
-                            },
+                            arguments: MoviesForOneCategoryArgs(
+                              id: categoryList[index].id ?? 0,
+                              name: categoryList[index].name ?? '',
+                            ),
                           );
                         },
                         child: Container(

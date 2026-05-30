@@ -37,6 +37,7 @@ import '../../feature/search/domain/usecases/search_movies_usecase.dart';
 import '../../feature/search/presentation/business_logic/bloc/search_bloc.dart';
 import '../network/remote/api_manager.dart';
 import '../network/remote/dio_helper.dart';
+import '../network/local/app_database_helper.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../network/check_connectivity/cubit/connectivity_cubit.dart';
 
@@ -51,24 +52,27 @@ Future<void> init() async {
   sl.registerLazySingleton<ApiManager>(() => ApiManager());
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
+  // Shared local database
+  sl.registerLazySingleton<AppDatabaseHelper>(() => AppDatabaseHelper());
+
   // Datasources
   sl.registerLazySingleton<HomeRemoteDataSource>(
-      () => HomeRemoteDataSourceImpl());
+      () => HomeRemoteDataSourceImpl(dioHelper: sl()));
   sl.registerLazySingleton<MovieDetailsRemoteDataSource>(
-      () => MovieDetailsRemoteDataSourceImpl());
+      () => MovieDetailsRemoteDataSourceImpl(dioHelper: sl()));
   sl.registerLazySingleton<SearchRemoteDataSource>(
-      () => SearchRemoteDataSourceImpl());
+      () => SearchRemoteDataSourceImpl(dioHelper: sl()));
   sl.registerLazySingleton<BrowseRemoteDataSource>(
-      () => BrowseRemoteDataSourceImpl());
+      () => BrowseRemoteDataSourceImpl(dioHelper: sl()));
   sl.registerLazySingleton<BookmarkRemoteDataSource>(
       () => BookmarkRemoteDataSourceImpl());
 
   // Local datasources
   sl.registerLazySingleton<HomeLocalDataSource>(
-    () => HomeLocalDataSourceImpl(),
+    () => HomeLocalDataSourceImpl(appDb: sl()),
   );
   sl.registerLazySingleton<MovieDetailsLocalDataSource>(
-    () => MovieDetailsLocalDataSourceImpl(),
+    () => MovieDetailsLocalDataSourceImpl(appDb: sl()),
   );
 
   // Repositories

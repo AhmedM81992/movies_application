@@ -10,11 +10,12 @@ abstract class MovieDetailsRemoteDataSource {
 }
 
 class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
-  MovieDetailsRemoteDataSourceImpl();
+  final DioHelper dioHelper;
+  MovieDetailsRemoteDataSourceImpl({required this.dioHelper});
 
   @override
   Future<DetailsModel> getDetails(int movieId) async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: '${EndPoints.details}$movieId',
     );
     return DetailsModel.fromJson(response.data);
@@ -22,7 +23,7 @@ class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
 
   @override
   Future<List<Results>> getSimilar(int movieId) async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: '${EndPoints.details}$movieId${EndPoints.similar}',
     );
     final similarModel = SimilarToModel.fromJson(response.data);

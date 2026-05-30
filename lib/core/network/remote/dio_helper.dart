@@ -10,7 +10,7 @@ import 'slow_network_interceptor.dart';
 class DioHelper {
   static late Dio dio;
 
-  static init() {
+  static void init() {
     try {
       dio = Dio(
         BaseOptions(
@@ -30,7 +30,7 @@ class DioHelper {
     }
   }
 
-  static Future<Response> getData({
+  Future<Response> getData({
     required String url,
     Map<String, dynamic>? query,
   }) async {
@@ -43,7 +43,7 @@ class DioHelper {
     }
   }
 
-  static Future<Response> postData({
+  Future<Response> postData({
     required String url,
     Map<String, dynamic>? data,
   }) async {
@@ -56,7 +56,7 @@ class DioHelper {
     }
   }
 
-  static Future<Response> postDataMapList({
+  Future<Response> postDataMapList({
     required String url,
     List<Map<String, Object?>>? data,
   }) async {

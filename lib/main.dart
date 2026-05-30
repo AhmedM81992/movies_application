@@ -101,8 +101,8 @@ class MoviesApp extends StatelessWidget {
                                 BlocProvider<HomeScreenBloc>(
                                   create: (_) => get_it.sl<HomeScreenBloc>(),
                                 ),
-                                BlocProvider<BookmarkBloc>(
-                                  create: (_) => get_it.sl<BookmarkBloc>()
+                                BlocProvider<BookmarkBloc>.value(
+                                  value: get_it.sl<BookmarkBloc>()
                                     ..add(ListenFavoritesEvent()),
                                 ),
                                 BlocProvider<BottomNavCubit>(

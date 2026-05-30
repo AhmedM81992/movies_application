@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/config/language/local_key.g.dart';
 import 'package:movies_app/config/theme/my_theme_data.dart';
 import 'package:movies_app/core/shared_widgets/app_bar_widget.dart';
 import 'package:movies_app/feature/home/presentation/business_logic/bloc/home_screen_bloc.dart';
@@ -93,15 +95,19 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                         unselectedItemColor: MyThemeData.whiteColor,
                         selectedIconTheme: const IconThemeData(
                             color: MyThemeData.selectedColor),
-                        items: const [
+                        items: [
                           BottomNavigationBarItem(
-                              icon: Icon(Icons.house), label: "HOME"),
+                              icon: const Icon(Icons.house),
+                              label: LocalKeys.home.tr()),
                           BottomNavigationBarItem(
-                              icon: Icon(Icons.search), label: "SEARCH"),
+                              icon: const Icon(Icons.search),
+                              label: LocalKeys.search.tr()),
                           BottomNavigationBarItem(
-                              icon: Icon(Icons.movie), label: "BROWSE"),
+                              icon: const Icon(Icons.movie),
+                              label: LocalKeys.browse.tr()),
                           BottomNavigationBarItem(
-                              icon: Icon(Icons.book), label: "WATCHLIST"),
+                              icon: const Icon(Icons.book),
+                              label: LocalKeys.watchlist.tr()),
                         ],
                       );
                     },

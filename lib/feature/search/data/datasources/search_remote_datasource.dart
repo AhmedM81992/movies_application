@@ -7,11 +7,12 @@ abstract class SearchRemoteDataSource {
 }
 
 class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
-  SearchRemoteDataSourceImpl();
+  final DioHelper dioHelper;
+  SearchRemoteDataSourceImpl({required this.dioHelper});
 
   @override
   Future<List<Results>> searchMovies(String query) async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.search,
       query: {'query': query},
     );

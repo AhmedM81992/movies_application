@@ -17,141 +17,11 @@ import 'package:movies_app/feature/browse/data/models/movie_discover_model/movie
 import 'package:movies_app/feature/browse/data/models/movies_list_model/movies_list_model_response_model.dart';
 
 class ApiManager {
-  // static Future<PopularModel?> getPopular() async {
-  //   try {
-  //     Uri url = Uri.https(
-  //         Constants.baseUrl, EndPoints.popular, {"apiKey": Constants.apiKey});
-
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-
-  //     Map<String, dynamic> json =
-  //         jsonDecode(response.body); //return json type to map.
-
-  //     return PopularModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<UpcomingModel?> getUpComing() async {
-  //   try {
-  //     Uri url = Uri.https(
-  //         Constants.baseUrl, EndPoints.upComing, {"apiKey": Constants.apiKey});
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     http.get(url);
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     return UpcomingModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<TopRatedModel?> getTopRated() async {
-  //   try {
-  //     Uri url = Uri.https(
-  //         Constants.baseUrl, EndPoints.topRated, {"apiKey": Constants.apiKey});
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     http.get(url);
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     return TopRatedModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<DetailsModel?> getDetails(String id) async {
-  //   try {
-  //     Uri url = Uri.https(Constants.baseUrl, EndPoints.details + id);
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     return DetailsModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<SimilarToModel?> getSimilar(String id) async {
-  //   try {
-  //     Uri url = Uri.https(
-  //         Constants.baseUrl, EndPoints.details + id + EndPoints.similar);
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     return SimilarToModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<SearchModel?> getSearch(String search) async {
-  //   try {
-  //     Uri url =
-  //         Uri.https(Constants.baseUrl, EndPoints.search, {"query": search});
-
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     //debugPrint(url.toString());
-  //     return SearchModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<TrailerModel?> getTrailer(String id) async {
-  //   try {
-  //     Uri url = Uri.https(
-  //         Constants.baseUrl, EndPoints.details + id + EndPoints.video);
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     Map<String, dynamic> json = jsonDecode(response.body);
-  //     debugPrint(url.toString());
-  //     return TrailerModel.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<MoviesListModel?> getMoviesList() async {
-  //   try {
-  //     Uri url = Uri.https(Constants.baseUrl, EndPoints.moviesList,
-  //         {"apiKey": Constants.apiKey});
-  //     http.Response response = await http
-  //         .get(url, headers: {"Authorization": AppStrings.headerApiKey!});
-  //     var responseBody = jsonDecode(response.body);
-  //     debugPrint(responseBody.toString());
-  //     return MoviesListModel.fromJson(responseBody);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static Future<MovieDiscoverModel?> getMovieDiscover(String category,
-  //     {int page = 1}) async {
-  //   try {
-  //     // Uri url = Uri.https(Constants.BASE_URL, EndPoints.movieDiscover,
-  //     //     {"apiKey": Constants.API_KEY});
-  //     http.Response response = await http.get(
-  //         Uri.parse(
-  //             "${Constants.baseUrl}${EndPoints.movieDiscover}?page=$page&with_genres=$category"),
-  //         headers: {"Authorization": AppStrings.headerApiKey!});
-  //     var responseBody = jsonDecode(response.body);
-  //     debugPrint(responseBody.toString());
-  //     return MovieDiscoverModel.fromJson(responseBody);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
   static Future<SearchModel?> getSearch(String search) async {
     try {
-      final response = await DioHelper.getData(
-        url: EndPoints.search,
-        query: {"query": search},
+      final response = await DioHelper.dio.get(
+        EndPoints.search,
+        queryParameters: {"query": search},
       );
       return SearchModel.fromJson(response.data);
     } catch (e) {
@@ -161,8 +31,8 @@ class ApiManager {
 
   static Future<SimilarToModel?> getSimilar(String id) async {
     try {
-      final response = await DioHelper.getData(
-        url: "${EndPoints.details}$id${EndPoints.similar}",
+      final response = await DioHelper.dio.get(
+        "${EndPoints.details}$id${EndPoints.similar}",
       );
       return SimilarToModel.fromJson(response.data);
     } catch (e) {
@@ -171,12 +41,10 @@ class ApiManager {
   }
 
   static Future<DetailsModel?> getDetails(String id) async {
-    //movie details page
     try {
-      final response = await DioHelper.getData(
-        url: "${EndPoints.details}$id",
+      final response = await DioHelper.dio.get(
+        "${EndPoints.details}$id",
       );
-
       return DetailsModel.fromJson(response.data);
     } catch (e) {
       debugPrint(e.toString());
@@ -185,11 +53,10 @@ class ApiManager {
 
   static Future<TopRatedModel?> getTopRated() async {
     try {
-      final response = await DioHelper.getData(
-        url: EndPoints.topRated,
-        query: {"apiKey": Constants.apiKey},
+      final response = await DioHelper.dio.get(
+        EndPoints.topRated,
+        queryParameters: {"apiKey": Constants.apiKey},
       );
-
       return TopRatedModel.fromJson(response.data);
     } catch (e) {
       debugPrint(e.toString());
@@ -198,11 +65,10 @@ class ApiManager {
 
   static Future<UpcomingModel?> getUpComing() async {
     try {
-      final response = await DioHelper.getData(
-        url: EndPoints.upComing,
-        query: {"apiKey": Constants.apiKey},
+      final response = await DioHelper.dio.get(
+        EndPoints.upComing,
+        queryParameters: {"apiKey": Constants.apiKey},
       );
-
       return UpcomingModel.fromJson(response.data);
     } catch (e) {
       debugPrint(e.toString());
@@ -210,11 +76,10 @@ class ApiManager {
   }
 
   static Future<PopularModel?> getPopular() async {
-    //first item on home screen
     try {
-      final response = await DioHelper.getData(
-        url: EndPoints.popular,
-        query: {"apiKey": Constants.apiKey},
+      final response = await DioHelper.dio.get(
+        EndPoints.popular,
+        queryParameters: {"apiKey": Constants.apiKey},
       );
       return PopularModel.fromJson(response.data);
     } catch (e) {
@@ -224,12 +89,10 @@ class ApiManager {
 
   static Future<TrailerModel?> getTrailer(String id) async {
     try {
-      Response response = await DioHelper.getData(
-        url: "${EndPoints.details}$id${EndPoints.video}",
+      Response response = await DioHelper.dio.get(
+        "${EndPoints.details}$id${EndPoints.video}",
       );
-
       debugPrint(response.realUri.toString());
-
       return TrailerModel.fromJson(response.data);
     } catch (e) {
       debugPrint("Error fetching trailer: $e");
@@ -239,13 +102,11 @@ class ApiManager {
 
   static Future<MoviesListModel?> getMoviesList() async {
     try {
-      Response response = await DioHelper.getData(
-        url: EndPoints.moviesList,
-        query: {"apiKey": Constants.apiKey},
+      Response response = await DioHelper.dio.get(
+        EndPoints.moviesList,
+        queryParameters: {"apiKey": Constants.apiKey},
       );
-
       debugPrint(response.data.toString());
-
       return MoviesListModel.fromJson(response.data);
     } catch (e) {
       debugPrint("Error fetching movies list: $e");
@@ -256,11 +117,11 @@ class ApiManager {
   static Future<MovieDiscoverModel?> getMovieDiscover(String category,
       {int page = 1}) async {
     try {
-      final response = await DioHelper.getData(
-        url: EndPoints.movieDiscover,
-        query: {"page": page, "with_genres": category},
+      final response = await DioHelper.dio.get(
+        EndPoints.movieDiscover,
+        queryParameters: {"page": page, "with_genres": category},
       );
-      debugPrint(response.realUri.toString()); // Logs the full request URL
+      debugPrint(response.realUri.toString());
       return MovieDiscoverModel.fromJson(response.data);
     } catch (e) {
       debugPrint(e.toString());

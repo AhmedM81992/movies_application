@@ -9,11 +9,12 @@ abstract class BrowseRemoteDataSource {
 }
 
 class BrowseRemoteDataSourceImpl implements BrowseRemoteDataSource {
-  BrowseRemoteDataSourceImpl();
+  final DioHelper dioHelper;
+  BrowseRemoteDataSourceImpl({required this.dioHelper});
 
   @override
   Future<List<Genres>> getMoviesList() async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.moviesList,
     );
     final moviesListModel = MoviesListModel.fromJson(response.data);
@@ -22,7 +23,7 @@ class BrowseRemoteDataSourceImpl implements BrowseRemoteDataSource {
 
   @override
   Future<List<Results>> getMovieDiscover(int genreId) async {
-    final response = await DioHelper.getData(
+    final response = await dioHelper.getData(
       url: EndPoints.movieDiscover,
       query: {'with_genres': genreId.toString()},
     );

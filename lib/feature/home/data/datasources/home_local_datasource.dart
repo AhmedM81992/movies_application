@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '../../../../core/network/local/app_database_helper.dart';
 
 abstract class HomeLocalDataSource {
   Future<String?> getCachedPopular();
@@ -14,42 +14,10 @@ abstract class HomeLocalDataSource {
 }
 
 class HomeLocalDataSourceImpl implements HomeLocalDataSource {
-  Database? _database;
+  final AppDatabaseHelper appDb;
+  HomeLocalDataSourceImpl({required this.appDb});
+
   final int _ttlMs = 24 * 60 * 60 * 1000;
-
-  Future<Database> _getDatabase() async {
-    _database ??= await _initDatabase();
-    return _database!;
-  }
-
-  Future<Database> _initDatabase() async {
-    final String path = join(await getDatabasesPath(), 'home_cache.db');
-    return await openDatabase(
-      path,
-      version: 2,
-      onCreate: (db, version) async {
-        await db.execute(
-          'CREATE TABLE popular_cache(id INTEGER PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE top_rated_cache(id INTEGER PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE upcoming_cache(id INTEGER PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE details_cache(id TEXT PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-        );
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute(
-            'CREATE TABLE IF NOT EXISTS details_cache(id TEXT PRIMARY KEY, data TEXT NOT NULL, timestamp INTEGER NOT NULL)',
-          );
-        }
-      },
-    );
-  }
 
   // --------------- Popular ---------------
 
@@ -91,7 +59,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
 
   @override
   Future<String?> getCachedDetails(String id) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       'details_cache',
       where: 'id = ?',
@@ -113,7 +81,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
 
   @override
   Future<void> cacheDetails(String id, String jsonData) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     await db.insert(
       'details_cache',
       {'id': id, 'data': jsonData, 'timestamp': DateTime.now().millisecondsSinceEpoch},
@@ -124,7 +92,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   // --------------- Shared helpers ---------------
 
   Future<String?> _getCachedFromTable(String table) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(table, limit: 1);
 
     if (maps.isNotEmpty) {
@@ -144,7 +112,7 @@ class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   }
 
   Future<void> _cacheToTable(String table, String jsonData) async {
-    final Database db = await _getDatabase();
+    final Database db = await appDb.getDatabase();
     await db.delete(table);
     await db.insert(
       table,
