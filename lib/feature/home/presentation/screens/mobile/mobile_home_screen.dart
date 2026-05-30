@@ -38,9 +38,9 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: MyThemeData.primaryColor,
-      child: BlocBuilder<BottomNavCubit, BottomNavState>(
+    return Scaffold(
+      backgroundColor: MyThemeData.primaryColor,
+      body: BlocBuilder<BottomNavCubit, BottomNavState>(
         builder: (context, state) {
           return Column(
             children: [

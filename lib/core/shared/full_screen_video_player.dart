@@ -83,7 +83,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                 top: 40.0,
                 left: 10.0,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
                     // Reset preferred orientations before popping
                     SystemChrome.setPreferredOrientations([

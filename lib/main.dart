@@ -31,36 +31,42 @@ import 'package:movies_app/firebase_options.dart';
 import 'package:movies_app/feature/browse/presentation/screens/movies_for_one_category.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized();
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  if (kReleaseMode) {
-    debugPrint = (String? message, {int? wrapWidth}) => {};
-  }
-  if (kDebugMode) {
-    Bloc.observer = MyBlocObserver();
-  }
+    if (kReleaseMode) {
+      debugPrint = (String? message, {int? wrapWidth}) => {};
+    }
+    if (kDebugMode) {
+      Bloc.observer = MyBlocObserver();
+    }
 
-  await dotenv.load(fileName: '.env');
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await dotenv.load(fileName: '.env');
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FirebaseFirestore.instance.disableNetwork();
+    FirebaseFirestore.instance.disableNetwork();
 
-  await get_it.init();
+    await get_it.init();
 
-  runApp(
-    OverlaySupport.global(
-      child: EasyLocalization(
-        supportedLocales: const [Locale('en'), Locale('ar')],
-        path: 'assets/translations',
-        assetLoader: const CodegenLoader(),
-        fallbackLocale: const Locale('en'),
-        startLocale: const Locale('en'),
-        child: const MoviesApp(),
+    runApp(
+      OverlaySupport.global(
+        child: EasyLocalization(
+          supportedLocales: const [Locale('en'), Locale('ar')],
+          path: 'assets/translations',
+          assetLoader: const CodegenLoader(),
+          fallbackLocale: const Locale('en'),
+          startLocale: const Locale('en'),
+          child: const MoviesApp(),
+        ),
       ),
-    ),
-  );
+    );
+  } catch (e, stacktrace) {
+    debugPrint("FATAL EXCEPTION IN MAIN: $e");
+    debugPrint("STACKTRACE: $stacktrace");
+    rethrow;
+  }
 }
 
 class MoviesApp extends StatelessWidget {
@@ -147,6 +153,9 @@ class MoviesApp extends StatelessWidget {
                         primaryColor: AppColors.royalBlue,
                         scaffoldBackgroundColor: AppColors.bgBody,
                         fontFamily: 'Cairo',
+                        appBarTheme: const AppBarTheme(
+                          iconTheme: IconThemeData(color: AppColors.white),
+                        ),
                       ),
                       builder: (context, child) {
                         return SecureGate(

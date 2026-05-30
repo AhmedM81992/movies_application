@@ -41,9 +41,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: MyThemeData.backgroundColor,
-      child: Column(
+    return Scaffold(
+      backgroundColor: MyThemeData.backgroundColor,
+      body: Column(
         children: [
           AppBarWidget(
             titleWidget: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(

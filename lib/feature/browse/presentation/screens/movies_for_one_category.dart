@@ -33,9 +33,9 @@ class _MoviesForOneCategoryState extends State<MoviesForOneCategory> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as MoviesForOneCategoryArgs;
-    return Container(
-      color: MyThemeData.backgroundColor,
-      child: Column(
+    return Scaffold(
+      backgroundColor: MyThemeData.backgroundColor,
+      body: Column(
         children: [
           AppBarWidget(
             title: args.name,

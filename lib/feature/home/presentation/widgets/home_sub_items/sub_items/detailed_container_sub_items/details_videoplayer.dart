@@ -84,9 +84,9 @@ class _DetailsVideoPlayerState extends State<DetailsVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     Constants.securedOnce = false;
-    return Container(
-      color: MyThemeData.backgroundColor,
-      child: Column(
+    return Scaffold(
+      backgroundColor: MyThemeData.backgroundColor,
+      body: Column(
         children: [
           if (!_isFullScreen)
             AppBarWidget(
