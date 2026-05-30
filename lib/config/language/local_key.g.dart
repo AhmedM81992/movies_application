@@ -47,4 +47,7 @@ abstract class LocalKeys {
   static const String cancel = 'cancel';
   static const String apply = 'apply';
   static const String close = 'close';
+  static const String categoryBrowse = 'categoryBrowse';
+  static const String browse = 'browse';
+  static const String watchlist = 'watchlist';
 }

@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/firebase/firebase_functions.dart';
-
-import '../../models/ResultsModel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/feature/bookmarks/domain/entities/bookmark_movie/bookmark_movie_entity.dart';
+import 'package:movies_app/feature/bookmarks/presentation/business_logic/bloc/bookmark_bloc.dart';
+import 'package:movies_app/feature/bookmarks/presentation/business_logic/bloc/bookmark_state.dart';
+import 'package:movies_app/feature/home/data/models/results_model/results_model_response_model.dart';
 
 class BookmarkClipper extends CustomClipper<Path> {
   @override
@@ -24,93 +25,53 @@ class BookmarkClipper extends CustomClipper<Path> {
 }
 
 // ignore: must_be_immutable
-class MyBookmarkWidget extends StatefulWidget {
-  MyBookmarkWidget({super.key, required this.moviesList});
+class MyBookmarkWidget extends StatelessWidget {
+  const MyBookmarkWidget({super.key, required this.moviesList});
 
-  Results moviesList;
-
-  @override
-  State<MyBookmarkWidget> createState() => _MyBookmarkWidgetState();
-}
-
-class _MyBookmarkWidgetState extends State<MyBookmarkWidget> {
-  bool isClicked = false;
-
-  List<Results> favList = [];
-
-  isFavorite() {
-    for (var element in favList) {
-      if (element.id == widget.moviesList.id) {
-        isClicked = true;
-      }
-    }
-  }
+  final Results moviesList;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Results>>(
-      stream: FireBaseFunctions.getFavorites(),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot<Results>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return bookMark();
-        }
-        favList = snapshot.data!.docs.map((e) => e.data()).toList();
-        isFavorite();
+    return BlocBuilder<BookmarkBloc, BookmarkState>(
+      builder: (context, state) {
+        final isClicked = state.favoriteIds.contains(moviesList.id ?? 0);
 
-        return bookMark();
-      },
-    );
-  }
-
-  void updateFav() {
-    if (favList.isEmpty || !isClicked) {
-      add();
-    } else {
-      favList.forEach((element) {
-        if (element.id == widget.moviesList.id) {
-          delete(element.fireBaseId ?? '');
-        }
-      });
-    }
-    setState(() {});
-  }
-
-  add() {
-    FireBaseFunctions.addMovie(widget.moviesList);
-    isClicked = true;
-  }
-
-  delete(String fireBaseId) {
-    FireBaseFunctions.deleteFavorites(fireBaseId);
-    isClicked = false;
-  }
-
-  Widget bookMark() {
-    return ClipPath(
-      clipper: BookmarkClipper(),
-      child: Container(
-        color: isClicked
-            ? Color(0xFFF7B539).withOpacity(0.8)
-            : Color(0xFF514F4F).withOpacity(0.8),
-        width:
-            MediaQuery.sizeOf(context).width * 0.078, // Sets width for bookmark
-        height: MediaQuery.sizeOf(context).height *
-            0.05, // Sets height for bookmark
-        child: Center(
-          child: IconButton(
-            icon: Icon(
-              isClicked ? Icons.check : Icons.add,
-              color: Colors.white,
-              size: 15,
+        return ClipPath(
+          clipper: BookmarkClipper(),
+          child: Container(
+            color: isClicked
+                ? const Color(0xFFF7B539).withValues(alpha: 0.8)
+                : const Color(0xFF514F4F).withValues(alpha: 0.8),
+            width: MediaQuery.sizeOf(context).width * 0.078,
+            height: MediaQuery.sizeOf(context).height * 0.05,
+            child: Center(
+              child: IconButton(
+                icon: Icon(
+                  isClicked ? Icons.check : Icons.add,
+                  color: Colors.white,
+                  size: 15,
+                ),
+                onPressed: () {
+                  debugPrint(moviesList.title);
+                  final bookmarkEntity = BookmarkMovieEntity(
+                    id: moviesList.id,
+                    title: moviesList.title ?? '',
+                    backdropPath: moviesList.backdropPath,
+                    posterPath: moviesList.posterPath,
+                    releaseDate: moviesList.releaseDate,
+                    voteAverage: moviesList.voteAverage,
+                    fireBaseId: moviesList.fireBaseId,
+                  );
+                  context.read<BookmarkBloc>().add(ToggleFavoriteEvent(
+                        movieId: moviesList.id ?? 0,
+                        movie: bookmarkEntity,
+                      ));
+                },
+              ),
             ),
-            onPressed: () {
-              print(widget.moviesList.title);
-              updateFav();
-            },
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

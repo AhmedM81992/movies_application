@@ -7,12 +7,12 @@ buildscript {
         // Match Gradle 8.7+ (wrapper) with AGP 8.6.1
         classpath 'com.android.tools.build:gradle:8.6.1'
         // Add Kotlin classpath explicitly (some projects rely on this)
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0"
     }
 }
 
 // Keep Kotlin version consistent everywhere
-ext.kotlin_version = '1.9.24'
+ext.kotlin_version = '2.1.0'
 
 allprojects {
     repositories {

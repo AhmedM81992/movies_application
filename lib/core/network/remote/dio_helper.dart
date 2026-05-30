@@ -4,11 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../components/constants.dart';
 import '../../utils/app_strings.dart';
+import 'dio_interceptor.dart';
+import 'slow_network_interceptor.dart';
 
 class DioHelper {
   static late Dio dio;
 
-  static init() {
+  static void init() {
     try {
       dio = Dio(
         BaseOptions(
@@ -20,25 +22,20 @@ class DioHelper {
           },
         ),
       );
+
+      dio.interceptors.add(SlowNetworkInterceptor());
+      dio.interceptors.add(LoggerInterceptor());
     } catch (e) {
       debugPrint("Dio Exception ::> $e");
     }
   }
 
-  static Future<Response> getData({
+  Future<Response> getData({
     required String url,
     Map<String, dynamic>? query,
   }) async {
     try {
       final response = await dio.get(url, queryParameters: query);
-
-      response.data
-          .toString()
-          .split(",")
-          // ignore: prefer_interpolation_to_compose_strings
-          .forEach((line) => debugPrint(
-              "Data Received::>> ${'"' + line.replaceFirst(":", '":').replaceFirst("{", "").replaceFirst("}", "").replaceFirst("[", "").replaceFirst("]", "")},"
-                  .replaceFirst('" ', '"')));
       return response;
     } on Exception catch (e) {
       debugPrint("Dio Exception ::> $e");
@@ -46,28 +43,12 @@ class DioHelper {
     }
   }
 
-  static Future<Response> postData({
+  Future<Response> postData({
     required String url,
     Map<String, dynamic>? data,
   }) async {
     try {
       final response = await dio.post(url, data: data);
-      data
-          .toString()
-          .split(",")
-          // ignore: prefer_interpolation_to_compose_strings
-          .forEach((line) => debugPrint(
-              "Data Sent::>> ${'"' + line.replaceFirst(":", '":')},"
-                  .replaceFirst('" ', '"')));
-
-      response.data
-          .toString()
-          .split(",")
-          // ignore: prefer_interpolation_to_compose_strings
-          .forEach((line) => debugPrint(
-              "Data Received::>> ${'"' + line.replaceFirst(":", '":')},"
-                  .replaceFirst('" ', '"')));
-
       return response;
     } on Exception catch (e) {
       debugPrint("Dio Exception ::> $e");
@@ -75,18 +56,11 @@ class DioHelper {
     }
   }
 
-  static Future<Response> postDataMapList({
+  Future<Response> postDataMapList({
     required String url,
     List<Map<String, Object?>>? data,
   }) async {
     try {
-      data
-          .toString()
-          .split(",")
-          // ignore: prefer_interpolation_to_compose_strings
-          .forEach((line) => debugPrint(
-              "Data Sent::>> ${'"' + line.replaceFirst(":", '":')},"
-                  .replaceFirst('" ', '"')));
       return await dio.post(url, data: data);
     } on Exception catch (e) {
       debugPrint("Dio Exception ::> $e");
